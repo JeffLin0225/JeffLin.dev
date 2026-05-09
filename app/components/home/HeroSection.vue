@@ -2,9 +2,7 @@
   <section id="hero-section" class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
     <!-- Grid background (hacker aesthetic) -->
     <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <!-- Animated grid -->
       <div class="absolute inset-0 grid-bg animate-grid-pulse" />
-      <!-- Radial fade -->
       <div class="absolute inset-0 bg-radial-fade" />
     </div>
 
@@ -33,9 +31,9 @@
 
       <!-- Subtitle description -->
       <p class="text-text-muted text-sm md:text-base font-light max-w-lg mx-auto mb-10 animate-fade-up stagger-3">
-        Building digital experiences with modern web technologies.
+        用現代網路技術打造數位體驗。
         <br class="hidden md:block" />
-        Clean code. Thoughtful design. Seamless performance.
+        乾淨的程式碼、深思熟慮的設計、流暢的效能。
       </p>
 
       <!-- CTA Buttons -->
@@ -44,7 +42,7 @@
           to="/github"
           class="px-6 py-3 bg-white text-surface-primary font-display text-sm font-medium rounded-sm border border-transparent transition-[background,transform] duration-fast hover:bg-neutral-200 active:scale-[0.97]"
         >
-          Explore Projects
+          探索專案
         </NuxtLink>
         <a
           href="https://github.com/Jefflin0225"
@@ -72,7 +70,7 @@ const typedTextEl = ref<HTMLSpanElement | null>(null)
 
 const phrases = [
   'Full-Stack Developer',
-  'Vue / Nuxt Enthusiast',
+  'Vue / Nuxt 愛好者',
   'Cloudflare Builder',
   'Open Source Contributor',
 ]
@@ -91,7 +89,6 @@ const tick = () => {
   const currentPhrase = phrases[phraseIndex]
 
   if (!isDeleting) {
-    /* Typing forward */
     displayedText.value = currentPhrase.slice(0, charIndex + 1)
     charIndex++
 
@@ -102,7 +99,6 @@ const tick = () => {
     }
     timeoutId = setTimeout(tick, typeSpeed)
   } else {
-    /* Deleting */
     displayedText.value = currentPhrase.slice(0, charIndex - 1)
     charIndex--
 
@@ -126,7 +122,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-/* ─── Grid background (hacker / matrix style) ─── */
 .grid-bg {
   background-image:
     linear-gradient(var(--border-subtle) 1px, transparent 1px),
@@ -135,7 +130,6 @@ onUnmounted(() => {
   opacity: 0.04;
 }
 
-/* ─── Radial fade from center ─── */
 .bg-radial-fade {
   background: radial-gradient(
     ellipse 60% 50% at 50% 50%,

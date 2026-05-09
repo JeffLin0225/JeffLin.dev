@@ -9,7 +9,7 @@
         <span class="hidden md:inline text-text-muted/50">═══</span>
         <span>&copy; {{ currentYear }} Jeff Lin</span>
         <span class="text-text-muted/30">│</span>
-        <span>Built with Nuxt</span>
+        <span>使用 Nuxt 建構</span>
       </div>
 
       <!-- Right: Social links -->
