@@ -1,8 +1,7 @@
 <template>
-  <section id="hero-section" class="relative overflow-hidden pt-32 pb-24 md:pt-44 md:pb-32">
+  <section id="hero-section" class="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-28">
     <!-- Grid background -->
     <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div class="absolute inset-0 grid-bg animate-grid-pulse" />
       <div class="absolute inset-0 bg-radial-fade" />
     </div>
 
@@ -32,14 +31,14 @@
 
         <!-- Center Piece: Self Introduction -->
         <div class="hero-center flex flex-col items-center justify-center">
-          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-4 animate-fade-up stagger-1">
+          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-8 animate-fade-up stagger-1">
             Hi, I'm
-            <span class="relative inline-block group cursor-default">
-              <span class="bg-clip-text text-transparent bg-gradient-to-b from-text-primary to-text-secondary transition-all duration-700 group-hover:from-white group-hover:to-text-primary group-hover:tracking-wide">Jeff Lin</span>
+            <span class="relative inline-block group cursor-default whitespace-nowrap">
+              <span class="bg-clip-text text-transparent bg-gradient-to-b from-text-primary to-text-secondary transition-all duration-700 font-mono">{{ scrambledName }}</span>
               <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-border-accent to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-100" />
             </span>
           </h1>
-          <div class="font-mono text-base md:text-lg text-text-secondary mb-6 animate-fade-up stagger-2 h-7 flex items-center justify-center">
+          <div class="font-mono text-base md:text-lg text-text-secondary mb-10 animate-fade-up stagger-2 h-7 flex items-center justify-center">
             <span class="text-text-muted/60 mr-2">&gt;</span>
             <span class="relative inline-block pb-0.5">
               {{ displayedText }}
@@ -47,7 +46,7 @@
             </span>
             <span class="inline-block w-[2px] h-5 bg-text-primary ml-1 animate-blink" />
           </div>
-          <p class="text-text-muted text-sm md:text-base font-light max-w-md mx-auto mb-8 animate-fade-up stagger-3">
+          <p class="text-text-muted text-sm md:text-base font-light max-w-md mx-auto mb-12 leading-relaxed animate-fade-up stagger-3">
             用現代網路技術打造數位體驗。
             <br class="hidden md:block" />
             乾淨的程式碼、深思熟慮的設計、流暢的效能。
@@ -97,6 +96,29 @@
 
 <script setup lang="ts">
 const displayedText = ref('')
+const originalName = 'Jeff Lin'
+const scrambledName = ref(originalName)
+let scrambleInterval: ReturnType<typeof setInterval> | null = null
+const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>'
+
+const startScramble = () => {
+  let iteration = 0
+  if (scrambleInterval) clearInterval(scrambleInterval)
+  
+  scrambleInterval = setInterval(() => {
+    scrambledName.value = originalName.split('').map((letter, index) => {
+      if(index < iteration) {
+        return originalName[index]
+      }
+      return letters[Math.floor(Math.random() * letters.length)]
+    }).join('')
+    
+    if(iteration >= originalName.length) {
+      if (scrambleInterval) clearInterval(scrambleInterval)
+    }
+    iteration += 1 / 3
+  }, 45)
+}
 const phrases = [
   'Full-Stack Developer 全端開發',
   'Vue / Nuxt 愛好者',
@@ -130,18 +152,18 @@ const tick = () => {
     timeoutId = setTimeout(tick, 20)
   }
 }
-onMounted(() => { timeoutId = setTimeout(tick, 800) })
-onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
+onMounted(() => { 
+  startScramble()
+  timeoutId = setTimeout(tick, 800) 
+})
+onUnmounted(() => { 
+  if (timeoutId) clearTimeout(timeoutId) 
+  if (scrambleInterval) clearInterval(scrambleInterval)
+})
 </script>
 
 <style scoped>
-.grid-bg {
-  background-image:
-    linear-gradient(var(--border-subtle) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border-subtle) 1px, transparent 1px);
-  background-size: 60px 60px;
-  opacity: 0.04;
-}
+
 .bg-radial-fade {
   background: radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, var(--bg-primary) 100%);
 }
@@ -162,7 +184,7 @@ onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
   grid-column: 2;
   grid-row: 1 / 3;
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 0.25rem 1rem;
 }
 
 /* ─── Card Base (Premium Hacker UI/UX) ─── */
@@ -202,6 +224,13 @@ onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  /* 超厚 3D Effect by Default */
+  box-shadow: 
+    0 8px 0 0 #050505,
+    0 8px 0 1px rgba(255, 255, 255, 0.05),
+    0 20px 40px rgba(0, 0, 0, 1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  transform: translateY(-4px);
   transition:
     border-color 400ms ease,
     transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -234,9 +263,13 @@ onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
 
 /* Hover effects */
 .nav-card:hover .card-inner {
-  border-color: var(--border-strong);
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 16px 40px -8px hsla(0, 0%, 0%, 0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+  border-color: var(--border-accent);
+  transform: translateY(-12px);
+  box-shadow: 
+    0 12px 0 0 #050505,
+    0 12px 0 1px rgba(255, 255, 255, 0.08),
+    0 30px 50px rgba(0, 0, 0, 1),
+    inset 0 1px 2px rgba(255, 255, 255, 0.15);
 }
 .nav-card:hover .card-inner::after {
   opacity: 1; /* Fade in spotlight */
