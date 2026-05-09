@@ -2,29 +2,22 @@
   <div class="min-h-screen flex flex-col items-center justify-center bg-surface-primary px-6">
     <div class="text-center max-w-md">
       <!-- Error Code -->
-      <h1 class="font-mono text-6xl font-bold text-text-primary mb-4">
+      <h1 class="font-mono text-7xl font-bold text-text-primary mb-4">
         {{ error?.statusCode || 500 }}
       </h1>
 
       <!-- ASCII divider -->
-      <div class="font-mono text-text-muted/30 text-sm mb-6">
+      <div class="font-mono text-text-muted/30 text-sm mb-6" aria-hidden="true">
         ════════════════════
       </div>
 
-      <!-- Message -->
-      <p class="font-display text-lg text-text-secondary mb-2">
+      <!-- Message (user-friendly, no details) -->
+      <p class="font-display text-xl text-text-secondary mb-2">
         {{ errorTitle }}
       </p>
-      <p class="font-mono text-sm text-text-muted mb-8">
-        {{ error?.message || 'An unexpected error occurred.' }}
+      <p class="text-sm text-text-muted mb-10">
+        {{ errorDescription }}
       </p>
-
-      <!-- Terminal prompt -->
-      <div class="font-mono text-sm text-text-muted mb-8">
-        <span class="text-text-secondary">$</span> suggest --fix
-        <br />
-        <span class="text-text-muted/60">&gt; Navigate back to a safe route.</span>
-      </div>
 
       <!-- CTA -->
       <button
@@ -32,7 +25,7 @@
         class="px-6 py-3 border border-border-default rounded-sm font-display text-sm font-medium text-text-primary bg-transparent cursor-pointer transition-[border-color,background] duration-fast hover:border-border-accent hover:bg-accent-glow active:scale-[0.97]"
         @click="handleError"
       >
-        cd ~/home
+        ← Back to Home
       </button>
     </div>
   </div>
@@ -46,9 +39,24 @@ const props = defineProps<{
 }>()
 
 const errorTitle = computed(() => {
-  if (props.error?.statusCode === 404) return 'Page not found'
-  return 'Something went wrong'
+  if (props.error?.statusCode === 404) return '找不到頁面'
+  return '發生了一些問題'
 })
+
+const errorDescription = computed(() => {
+  if (props.error?.statusCode === 404) return '你要找的頁面可能已移除，或是網址有誤。'
+  return '請稍後再試，或回到首頁重新開始。'
+})
+
+/* Log error details for debugging (will appear in Cloudflare logs) */
+if (import.meta.server && props.error) {
+  console.error('[Error Page]', {
+    statusCode: props.error.statusCode,
+    message: props.error.message,
+    url: props.error.url,
+    stack: props.error.stack,
+  })
+}
 
 const handleError = () => {
   clearError({ redirect: '/' })

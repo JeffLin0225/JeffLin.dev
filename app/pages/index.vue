@@ -1,16 +1,14 @@
 <template>
   <div>
     <HomeHeroSection />
-    <HomeNavigationCards />
-    <HomeContactSection />
   </div>
 </template>
 
 <script setup lang="ts">
 useSeoMeta({
   title: 'Jeff Lin — Full-Stack Developer',
-  description: 'Jeff Lin — Full-Stack Developer. Explore projects, learn about my tech stack, and connect with me.',
+  description: 'Jeff Lin — Full-Stack Developer。探索專案、了解技術棧、與我聯繫。',
   ogTitle: 'Jeff Lin — Full-Stack Developer',
-  ogDescription: 'Building digital experiences with modern web technologies.',
+  ogDescription: '用現代網路技術打造數位體驗。',
 })
 </script>
