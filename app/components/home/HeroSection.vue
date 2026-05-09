@@ -14,7 +14,7 @@
         <NuxtLink to="/github" class="nav-card group card-tl">
           <div class="card-inner">
             <PuzzleCardHeader filename="github.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1">GitHub 專案</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">GitHub 專案</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">瀏覽與搜尋我的 Repositories。</p>
             <PuzzleCardFooter :tags="['repos', 'search']" />
           </div>
@@ -24,28 +24,28 @@
         <NuxtLink to="/about" class="nav-card group card-tr">
           <div class="card-inner">
             <PuzzleCardHeader filename="skills.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1">關於我</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">關於我</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">了解我的背景與技術棧。</p>
             <PuzzleCardFooter :tags="['skills', 'stack']" />
           </div>
         </NuxtLink>
 
         <!-- Center Piece: Self Introduction -->
-        <div class="hero-center">
-          <div class="font-mono text-sm text-text-muted mb-4 animate-fade-up">
-            <span class="text-text-muted/60">$</span> whoami
-          </div>
-          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-3 animate-fade-up stagger-1">
+        <div class="hero-center flex flex-col items-center justify-center">
+          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-4 animate-fade-up stagger-1">
             Hi, I'm
-            <span class="relative inline-block">
-              Jeff Lin
-              <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-border-accent to-transparent" />
+            <span class="relative inline-block group cursor-default">
+              <span class="bg-clip-text text-transparent bg-gradient-to-b from-text-primary to-text-secondary transition-all duration-700 group-hover:from-white group-hover:to-text-primary group-hover:tracking-wide">Jeff Lin</span>
+              <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-border-accent to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-100" />
             </span>
           </h1>
-          <div class="font-mono text-base md:text-lg text-text-secondary mb-5 animate-fade-up stagger-2 h-7 flex items-center justify-center">
+          <div class="font-mono text-base md:text-lg text-text-secondary mb-6 animate-fade-up stagger-2 h-7 flex items-center justify-center">
             <span class="text-text-muted/60 mr-2">&gt;</span>
-            <span>{{ displayedText }}</span>
-            <span class="inline-block w-[2px] h-5 bg-text-primary ml-0.5 animate-blink" />
+            <span class="relative inline-block pb-0.5">
+              {{ displayedText }}
+              <span class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent to-border-accent opacity-80" />
+            </span>
+            <span class="inline-block w-[2px] h-5 bg-text-primary ml-1 animate-blink" />
           </div>
           <p class="text-text-muted text-sm md:text-base font-light max-w-md mx-auto mb-8 animate-fade-up stagger-3">
             用現代網路技術打造數位體驗。
@@ -53,17 +53,17 @@
             乾淨的程式碼、深思熟慮的設計、流暢的效能。
           </p>
           <div class="flex items-center justify-center gap-4 animate-fade-up stagger-4">
-            <NuxtLink
+            <!-- <NuxtLink
               to="/github"
               class="px-6 py-2.5 bg-white text-surface-primary font-display text-sm font-medium rounded-sm transition-[background,transform] duration-fast hover:bg-neutral-200 active:scale-[0.97]"
             >
               探索專案
-            </NuxtLink>
+            </NuxtLink> -->
             <a
               href="https://github.com/Jefflin0225"
               target="_blank"
               rel="noopener noreferrer"
-              class="px-6 py-2.5 border border-border-default font-display text-sm font-medium text-text-primary rounded-sm transition-[border-color,background] duration-fast hover:border-border-accent hover:bg-accent-glow active:scale-[0.97]"
+              class="px-6 py-2.5 bg-white text-surface-primary font-display text-sm font-medium rounded-sm transition-[background,transform] duration-fast hover:bg-neutral-200 active:scale-[0.97]"
             >
               <span class="font-mono text-text-muted text-xs mr-1.5">↗</span>GitHub
             </a>
@@ -74,7 +74,7 @@
         <NuxtLink to="/contact" class="nav-card group card-bl">
           <div class="card-inner">
             <PuzzleCardHeader filename="contact.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1">聯繫方式</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">聯繫方式</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">透過 GitHub 或 Email 聯繫我。</p>
             <PuzzleCardFooter :tags="['email', 'github']" />
           </div>
@@ -84,7 +84,7 @@
         <NuxtLink to="/github" class="nav-card group card-br">
           <div class="card-inner">
             <PuzzleCardHeader filename="featured.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1">精選作品</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">精選作品</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">全端應用與開源貢獻精選。</p>
             <PuzzleCardFooter :tags="['portfolio']" />
           </div>
@@ -165,12 +165,32 @@ onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
   padding: 2rem 1rem;
 }
 
-/* ─── Card Base ─── */
+/* ─── Card Base (Premium Hacker UI/UX) ─── */
 .nav-card {
   display: flex;
   text-decoration: none;
   height: 100%;
+  position: relative;
 }
+
+/* Decorative Crosshairs on corners */
+.nav-card::before, .nav-card::after {
+  content: '+';
+  position: absolute;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 400ms ease, transform 400ms ease;
+  pointer-events: none;
+  z-index: 20;
+}
+.nav-card::before { top: -8px; left: -5px; }
+.nav-card::after { bottom: -8px; right: -5px; }
+
+.nav-card:hover::before { opacity: 0.8; transform: rotate(90deg); }
+.nav-card:hover::after { opacity: 0.8; transform: rotate(-90deg); }
+
 .card-inner {
   width: 100%;
   background: var(--bg-secondary);
@@ -183,43 +203,66 @@ onUnmounted(() => { if (timeoutId) clearTimeout(timeoutId) })
   flex-direction: column;
   justify-content: space-between;
   transition:
-    border-color 300ms ease,
-    transform 300ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 300ms ease;
+    border-color 400ms ease,
+    transform 400ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 400ms ease;
 }
 
-/* Hover effects */
+/* Background spotlight glow on hover */
+.card-inner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at 50% 0%, rgba(255,255,255,0.04), transparent 60%);
+  opacity: 0;
+  transition: opacity 500ms ease;
+  pointer-events: none;
+}
+
+/* Animated Shimmering Top Border */
 .card-inner::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0; left: -100%;
+  width: 200%;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
   opacity: 0;
-  transition: opacity 300ms ease;
+  transition: opacity 400ms ease;
+  z-index: 10;
 }
 
+/* Hover effects */
 .nav-card:hover .card-inner {
   border-color: var(--border-strong);
-  transform: translateY(-5px);
-  box-shadow: 0 12px 40px hsla(0, 0%, 0%, 0.6);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 16px 40px -8px hsla(0, 0%, 0%, 0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+}
+.nav-card:hover .card-inner::after {
+  opacity: 1; /* Fade in spotlight */
 }
 .nav-card:hover .card-inner::before {
   opacity: 1;
+  animation: shimmerLine 2.5s infinite linear;
+}
+
+@keyframes shimmerLine {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
 }
 
 /* ─── Animations ─── */
 .nav-card, .hero-center {
-  animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeUpIn 2.0s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
-.card-tl { animation-delay: 0.1s; }
-.card-tr { animation-delay: 0.2s; }
 .hero-center { animation-delay: 0s; }
-.card-bl { animation-delay: 0.3s; }
-.card-br { animation-delay: 0.4s; }
+.card-tl { animation-delay: 0.3s; }
+.card-tr { animation-delay: 0.6s; }
+.card-bl { animation-delay: 0.9s; }
+.card-br { animation-delay: 1.2s; }
 
 @keyframes fadeUpIn {
-  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
