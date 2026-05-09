@@ -1,9 +1,11 @@
 <template>
   <nav
     id="main-navbar"
-    class="fixed top-0 left-0 right-0 z-50 glass border-b border-border-subtle"
+    class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/20"
   >
-    <div class="container-main flex items-center justify-between h-16">
+    <!-- Glowing bright white divider line -->
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-80" />
+    <div class="container-main flex items-center justify-between h-16 relative">
       <!-- Logo -->
       <NuxtLink to="/" class="group flex items-center gap-0.5" aria-label="Home">
         <span class="font-display text-xl font-bold tracking-tight text-text-primary">
