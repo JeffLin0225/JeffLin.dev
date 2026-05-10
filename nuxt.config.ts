@@ -16,10 +16,10 @@ export default defineNuxtConfig({
 
   /* ─── Route Rules ─── */
   routeRules: {
-    '/':          { prerender: true },
-    '/github':    { swr: 3600 },
-    '/github/**': { swr: 3600 },
-    '/api/**':    { cors: true },
+    '/': { prerender: true },
+    // '/github': { swr: 3600 },
+    // '/github/**': { swr: 3600 },
+    '/api/**': { cors: true },
   },
 
   /* ─── Runtime Config ─── */
