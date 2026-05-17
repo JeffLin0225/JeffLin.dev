@@ -17,8 +17,10 @@ export default defineNuxtConfig({
   /* ─── Route Rules ─── */
   routeRules: {
     '/': { prerender: true },
-    // '/github': { swr: 3600 },
-    // '/github/**': { swr: 3600 },
+    // SWR 僅在正式環境啟用（dev 模式會導致 payload 快取衝突）
+    ...(process.env.NODE_ENV === 'production' && {
+      '/github/**': { swr: 3600 },
+    }),
     '/api/**': { cors: true },
   },
 
@@ -27,6 +29,13 @@ export default defineNuxtConfig({
     githubToken: '',
     public: {
       appName: 'JeffLin.dev',
+    },
+  },
+
+  /* ─── Vite Optimize ─── */
+  vite: {
+    optimizeDeps: {
+      include: ['fuse.js'],
     },
   },
 
