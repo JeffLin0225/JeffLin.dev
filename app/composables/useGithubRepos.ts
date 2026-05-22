@@ -1,5 +1,5 @@
-import Fuse from 'fuse.js'
-import type { GitHubRepo } from '~/server/utils/github'
+import Fuse, { type IFuseOptions } from 'fuse.js'
+import type { GitHubRepo } from '~/types/github'
 
 /**
  * GitHub Repos 資料管理 Composable
@@ -14,7 +14,7 @@ export const useGithubRepos = () => {
   const lastSync = useState<string>('github-last-sync', () => '')
 
   /* ─── Fuse.js 設定 ─── */
-  const fuseOptions: Fuse.IFuseOptions<GitHubRepo> = {
+  const fuseOptions: IFuseOptions<GitHubRepo> = {
     keys: [
       { name: 'name', weight: 0.4 },
       { name: 'description', weight: 0.35 },
@@ -74,16 +74,23 @@ export const useGithubRepos = () => {
     return result
   })
 
-  /* ─── 取得資料（SSR + client 共用）─── */
+  /* ─── 取得資料（lazy: 頁面先切換，資料背景載入）─── */
   const fetchRepos = async () => {
-    const { data, error } = await useAsyncData('github-repos', () =>
+    const { data, error, pending } = await useAsyncData('github-repos', () =>
       $fetch<{ success: boolean; data: GitHubRepo[]; lastSync: string }>('/api/github'),
+      { lazy: true },
     )
 
-    if (data.value && data.value.success) {
-      repos.value = data.value.data
-      lastSync.value = data.value.lastSync
-    }
+    // 將 useAsyncData 的 pending 狀態同步到 isLoading
+    watch(pending, (val) => { isLoading.value = val }, { immediate: true })
+
+    // 資料到達時更新
+    watch(data, (val) => {
+      if (val && val.success) {
+        repos.value = val.data
+        lastSync.value = val.lastSync
+      }
+    }, { immediate: true })
 
     if (error.value) {
       console.error('[useGithubRepos] Fetch error:', error.value)

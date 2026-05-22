@@ -3,15 +3,9 @@
  * 負責呼叫 GitHub REST API 並清洗資料
  */
 
-export interface GitHubRepo {
-  name: string
-  full_name: string
-  description: string | null
-  html_url: string
-  language: string | null
-  created_at: string
-  updated_at: string
-}
+// 型別從 app/types/github.ts 共用，避免重複定義
+export type { GitHubRepo } from '../../app/types/github'
+import type { GitHubRepo } from '../../app/types/github'
 
 interface GitHubApiRepo {
   name: string

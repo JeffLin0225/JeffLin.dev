@@ -3,7 +3,7 @@
 > **用途：** 定義網站中「GitHub 專案探索」頁面的功能、資料流與 UI 設計規格。  
 > **渲染模式：** SSR + SWR（每小時重新驗證）  
 > **技術棧：** Nuxt 4 + Cloudflare KV + Fuse.js + GitHub REST API  
-> **實作狀態：** 🔴 尚未開始
+> **實作狀態：** 🟡 Phase 1 開發中
 
 ---
 
@@ -179,26 +179,31 @@ POST /api/cron/sync-repos
 export const useGithubRepos = () => {
   const repos = useState<GitHubRepo[]>('github-repos', () => []);
   const searchQuery = useState<string>('github-search', () => '');
+  const selectedLanguages = useState<string[]>('github-langs', () => []);
   const isLoading = useState<boolean>('github-loading', () => false);
-  const lastSync = useState<string>('github-last-sync', () => '');
 
   // Fuse.js 實例（客戶端）
-  const fuse = computed(() => new Fuse(repos.value, {
-    keys: ['name', 'description', 'language'],
-    threshold: 0.3,
-    includeScore: true,
-  }));
+  const fuse = computed(() => new Fuse(repos.value, fuseOptions));
 
-  // 搜尋結果
-  const filteredRepos = computed(() => {
-    if (!searchQuery.value) return repos.value;
-    return fuse.value.search(searchQuery.value).map(r => r.item);
-  });
+  // 搜尋建議（Google 式 dropdown，最多 6 筆）
+  const suggestions = computed(() => { ... });
 
-  // 取得專案（SSR 時 server 端執行）
-  const fetchRepos = async () => { /* useAsyncData + $fetch */ };
+  // 篩選結果（搜尋 + 語言雙重篩選）
+  const filteredRepos = computed(() => { ... });
 
-  return { repos, searchQuery, filteredRepos, isLoading, lastSync, fetchRepos };
+  // 取得資料（lazy 模式 — 頁面先切換，資料背景載入）
+  // 遵循 project_specs.md Section 3.6 Loading 規範
+  const fetchRepos = async () => {
+    const { data, pending } = await useAsyncData('github-repos',
+      () => $fetch('/api/github'),
+      { lazy: true },
+    )
+    watch(pending, (val) => { isLoading.value = val }, { immediate: true })
+    watch(data, (val) => { /* 更新 repos */ }, { immediate: true })
+  };
+
+  return { repos, searchQuery, selectedLanguages, suggestions,
+           filteredRepos, isLoading, fetchRepos, ... };
 };
 ```
 
@@ -325,18 +330,34 @@ const fuseOptions: Fuse.IFuseOptions<GitHubRepo> = {
 - 水平捲動卡片輪播（CSS scroll-snap）
 - 卡片帶「推薦原因」小標籤（如「最近更新」「同語言」）
 
-### 5.6 空狀態 & Loading
+### 5.6 Loading 狀態
 
-**Loading 狀態：** 使用共用 `LoadingOverlay.vue`（Orbit Constellation 模式）
+> 遵循 `project_specs.md` Section 3.6 Loading 規範。
+
+**本頁面有 API 資料讀取（`GET /api/github`），必須套用 Loading 機制：**
+
+1. **NuxtLoadingIndicator**（頂部進度條） — 全站已掛載
+2. **LoadingOverlay**（Orbit Constellation） — 頁面級
+3. **`useAsyncData` 使用 `lazy: true`** — 頁面先切換，不阻塞導航
+
+```vue
+<template>
+  <div>
+    <UiLoadingOverlay :visible="isLoading" />
+    <!-- 內容在 isLoading = false 後顯示 -->
+  </div>
+</template>
+```
+
+### 5.7 空狀態
 
 **空搜尋結果：**
-- 居中大圖示 + 「No projects found」
-- 顯示搜尋建議：「Try searching for: JavaScript, Python, ...」
+- 居中圖示 + 「找不到符合的專案」
+- 顯示搜尋建議關鍵字 pills
 - 帶 fade-in 進場動畫
 
-**無資料（KV 為空）：**
-- 顯示重新同步按鈕（開發模式可見）
-- 顯示 fallback 訊息
+**無資料（KV 為空 + API fallback 失敗）：**
+- 顯示「尚無專案資料」+ 稍後再試提示
 
 ---
 
@@ -434,20 +455,20 @@ server/
 ## 11. Phase 規劃
 
 ### Phase 1 — MVP
-- [ ] Server 端：KV 工具函數（`useKV`）
-- [ ] Server 端：GitHub API 同步 → KV（Cron + 手動 API）
-- [ ] Server 端：`GET /api/github` 讀取 KV
-- [ ] Composable：`useGithubRepos`（資料管理 + Fuse.js）
-- [ ] 元件：HeroSearch（搜尋框 + 標題）
-- [ ] 元件：LanguageFilter（語言篩選 pills）
-- [ ] 元件：RepoCard（專案卡片）
-- [ ] 元件：RepoGrid（Grid 容器 + stagger 動畫）
-- [ ] 元件：EmptyState（空搜尋 / 無資料）
-- [ ] 元件：RecommendSection（推薦區塊）
-- [ ] 頁面：`/github` 主頁面組裝
-- [ ] 響應式設計
-- [ ] SEO（useSeoMeta）
-- [ ] nuxt.config.ts 更新（SWR route rules）
+- [x] Server 端：KV 工具函數（`useKV`）
+- [x] Server 端：GitHub API 工具（`github.ts`）
+- [x] Server 端：`GET /api/github`（KV + fallback GitHub API）
+- [x] Server 端：`POST /api/cron/sync-repos`（手動同步）
+- [x] Composable：`useGithubRepos`（Fuse.js + lazy 載入 + 搜尋建議）
+- [x] 元件：SearchHero（搜尋框 + 分類 pills + Google 式建議 dropdown）
+- [x] 元件：RepoCard（專案卡片 + 語言色彩條）
+- [x] 元件：RepoGrid（Grid 容器 + stagger 動畫）
+- [x] 元件：EmptyState（空搜尋 / 無資料）
+- [x] 頁面：`/github` 主頁面組裝
+- [x] Loading：NuxtLoadingIndicator + LoadingOverlay（遵循全域規範）
+- [x] nuxt.config.ts 更新（SWR 條件式啟用 + vite optimizeDeps）
+- [ ] 響應式設計精修
+- [ ] SEO ogImage
 
 ### Phase 2 — 進階（可選）
 - [ ] 單一專案詳情頁 `/github/:name`

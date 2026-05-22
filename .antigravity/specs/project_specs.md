@@ -172,6 +172,49 @@ export default defineEventHandler(async (event) => {
 ### 3.5 SEO
 - 每頁必須 `useSeoMeta()` 設定 title、description、ogImage
 
+### 3.6 Loading 與過渡策略
+
+> **全域規則：任何頁面只要有 API / KV 資料讀取，必須套用 Loading 機制。**
+
+#### 3.6.1 全站導航進度條
+
+- `app.vue` 必須掛載 `<NuxtLoadingIndicator>`（頂部細線進度條）
+- 設定：`height="2"`, `color="hsla(0,0%,100%,0.6)"`
+- 效果：所有頁面切換時自動顯示，類似 GitHub / YouTube
+
+#### 3.6.2 頁面級 Loading Overlay
+
+適用條件：頁面的 `useAsyncData` / `useFetch` 會在客戶端導航時產生等待。
+
+**實作模式：**
+
+```typescript
+// composable 內
+const { data, pending } = await useAsyncData('key', () => $fetch('/api/xxx'), {
+  lazy: true,  // ← 關鍵：頁面先切換，資料背景載入
+})
+
+// 將 pending 同步到 isLoading
+watch(pending, (val) => { isLoading.value = val }, { immediate: true })
+```
+
+```vue
+<!-- 頁面 template -->
+<UiLoadingOverlay :visible="isLoading" />
+```
+
+- **`lazy: true`**：頁面立即切換，不阻塞導航
+- **`LoadingOverlay`**：全屏毛玻璃 + Orbit Constellation 動畫
+- 資料到達後 overlay 自動消失，內容淡入
+
+#### 3.6.3 判斷是否需要 Loading
+
+| 頁面資料來源 | 需要 Loading？ | 原因 |
+|---|---|---|
+| 無 API（純靜態 / SSG） | ❌ 不需要 | 頁面預渲染，秒開 |
+| API / KV（SSR + lazy） | ✅ 需要 | 客戶端導航時有等待時間 |
+| 外部 API（GitHub 等） | ✅ 需要 | 延遲不可控 |
+
 ---
 
 ## 4. 環境變數規範
