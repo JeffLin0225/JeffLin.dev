@@ -1,75 +1,94 @@
-# Nuxt Minimal Starter
+# JeffLin.dev
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+個人網站 — Built with Nuxt 4 + Cloudflare Pages + KV
 
 ## Setup
 
-Make sure to install dependencies:
-
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
-
-Start the development server on `http://localhost:3000`:
+## Development
 
 ```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+啟動後 `nitro-cloudflare-dev` 會自動模擬 Cloudflare KV binding，資料存在 `.wrangler/state/`。
 
-Build the application for production:
+## Cloudflare KV 測試
+
+### 手動同步 GitHub repos 到 KV
 
 ```bash
-# npm
+curl -X POST http://localhost:3000/api/cron/sync-repos
+```
+
+預期回傳：
+
+```json
+{
+  "success": true,
+  "message": "Synced 25 repos",
+  "lastSync": "2026-05-22T16:35:35.746Z",
+  "kvAvailable": true
+}
+```
+
+- `kvAvailable: true` — KV binding 可用（本地模擬成功）
+- `kvAvailable: false` — KV binding 不可用（缺少 `wrangler.json` 或 `nitro-cloudflare-dev`）
+
+### 從 KV 讀取資料
+
+```bash
+curl http://localhost:3000/api/github
+```
+
+預期回傳：
+
+```json
+{
+  "success": true,
+  "data": [ ... ],
+  "lastSync": "2026-05-22T16:35:35.746Z"
+}
+```
+
+- 有 `lastSync` 時間戳 → 資料來自 KV
+- 沒有 → fallback 直接打 GitHub API
+
+### 查看遠端 KV 內容（需 wrangler login）
+
+```bash
+# 列出所有 key
+npx wrangler kv key list --namespace-id <KV_NAMESPACE_ID>
+
+# 讀取特定 key 的值
+# 看 repos 完整資料
+npx wrangler kv key get "github:repos:all" --namespace-id <KV_NAMESPACE_ID>
+npx wrangler kv key get "github:repos:lastSync" --namespace-id <KV_NAMESPACE_ID>
+```
+
+> 本地開發的 KV 資料存在 `.wrangler/state/`，不會寫到遠端。
+
+## Build & Deploy
+
+```bash
+# Build（輸出 Cloudflare Pages 格式到 dist/）
 npm run build
 
-# pnpm
-pnpm build
+# 本地用 wrangler 模擬 Cloudflare 環境預覽（需先 build）
+npm run cf:preview
 
-# yarn
-yarn build
-
-# bun
-bun run build
+# 部署到 Cloudflare Pages（需先 build）
+npm run cf:deploy
 ```
 
-Locally preview production build:
+## Scripts 速查
 
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+| Script | 用途 | 需先 build |
+|--------|------|-----------|
+| `npm run dev` | 本地開發（KV 自動模擬） | ❌ |
+| `npm run build` | Build 產出到 `dist/` | — |
+| `npm run cf:preview` | wrangler 本地預覽 | ✅ |
+| `npm run cf:deploy` | 部署到 Cloudflare Pages | ✅ |

@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   /* ─── Modules ─── */
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', 'nitro-cloudflare-dev'],
 
   /* ─── Global CSS ─── */
   css: ['~/assets/css/main.css'],
@@ -37,6 +37,11 @@ export default defineNuxtConfig({
     optimizeDeps: {
       include: ['fuse.js'],
     },
+  },
+
+  /* ─── Nitro (Cloudflare Pages) ─── */
+  nitro: {
+    preset: 'cloudflare_pages',
   },
 
   /* ─── App Head — Fonts + Meta ─── */
