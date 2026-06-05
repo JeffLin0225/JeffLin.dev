@@ -61,12 +61,12 @@ curl http://localhost:3000/api/github
 
 ```bash
 # 列出所有 key
-npx wrangler kv key list --namespace-id <KV_NAMESPACE_ID>
+npx wrangler kv key list --namespace-id <KV_NAMESPACE_ID> --remote
 
 # 讀取特定 key 的值
 # 看 repos 完整資料
-npx wrangler kv key get "github:repos:all" --namespace-id <KV_NAMESPACE_ID>
-npx wrangler kv key get "github:repos:lastSync" --namespace-id <KV_NAMESPACE_ID>
+npx wrangler kv key get "github:repos:all" --namespace-id <KV_NAMESPACE_ID> --remote
+npx wrangler kv key get "github:repos:lastSync" --namespace-id <KV_NAMESPACE_ID> --remote
 ```
 
 > 本地開發的 KV 資料存在 `.wrangler/state/`，不會寫到遠端。
