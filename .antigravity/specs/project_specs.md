@@ -235,20 +235,24 @@ watch(pending, (val) => { isLoading.value = val }, { immediate: true })
 
 ```json
 {
-  "name": "your-project-name",
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jefflin-dev",
+  "compatibility_date": "2025-07-15",
   "pages_build_output_dir": "dist",
   "kv_namespaces": [
-    { "binding": "KV", "id": "your-kv-namespace-id" }
-  ],
-  "r2_buckets": [
-    { "binding": "MY_BUCKET", "bucket_name": "your-bucket-name" }
-  ],
-  "ai": { "binding": "AI" }
+    {
+      "binding": "KV",
+      "id": "<PRODUCTION_KV_ID>",
+      "preview_id": "<PREVIEW_KV_ID>"
+    }
+  ]
 }
 ```
 
 <!--
-  [DISABLED] D1 & Vectorize：
+  [DISABLED] R2 / AI / D1 / Vectorize：
+  "r2_buckets": [{ "binding": "MY_BUCKET", "bucket_name": "..." }],
+  "ai": { "binding": "AI" },
   "d1_databases": [{ "binding": "DB", "database_name": "...", "database_id": "..." }],
   "vectorize": [{ "binding": "VECTORIZE", "index_name": "..." }]
 -->
@@ -258,6 +262,13 @@ watch(pending, (val) => { isLoading.value = val }, { immediate: true })
 ```typescript
 export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
+
+  modules: ['@nuxtjs/tailwindcss', 'nitro-cloudflare-dev'],
+
+  nitro: {
+    preset: 'cloudflare_pages',
+  },
+
   routeRules: {
     '/':          { prerender: true },
     '/github':    { swr: 3600 },
@@ -265,36 +276,130 @@ export default defineNuxtConfig({
     '/admin/**':  { ssr: false },
     '/api/**':    { cors: true },
   },
-  compatibilityDate: '2024-11-01',
+  compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   imports: { dirs: ['composables/**'] },
   runtimeConfig: {
     someSecretKey: '',
     public: { appName: '' },
   },
-  modules: ['@nuxtjs/tailwindcss'],
 })
+```
+
+### 5.3 TypeScript Binding 型別
+
+在 `server/types/cloudflare.d.ts` 中定義 Cloudflare bindings 的 TypeScript 型別：
+
+```typescript
+declare module 'h3' {
+  interface H3EventContext {
+    cloudflare: {
+      env: {
+        KV: KVNamespace
+        // MY_BUCKET: R2Bucket
+        // AI: Ai
+      }
+    }
+  }
+}
+export {}
 ```
 
 ---
 
-## 6. 部署流程
+## 6. Cloudflare 資源建立與部署流程
+
+### 6.1 前置準備 — Wrangler 登入
 
 ```bash
-nuxt build --preset cloudflare_pages
-wrangler pages dev dist      # 本地預覽
-wrangler pages deploy dist   # 正式部署
+# 安裝 wrangler（已在 devDependencies）
+npm install
+
+# 登入 Cloudflare 帳號（開啟瀏覽器授權）
+wrangler login
+
+# 驗證登入成功
+wrangler whoami
 ```
 
-- KV namespace 需先 `wrangler kv namespace create <NAME>`
-- 正式環境 Binding 在 Cloudflare Dashboard 設定
-<!-- D1 migrations / Vectorize remote:true [DISABLED] -->
+### 6.2 建立 Cloudflare KV Namespace
+
+```bash
+# 建立 production KV namespace
+npx wrangler kv namespace create KV
+# → 輸出包含 id，例如：
+# { binding = "KV", id = "abc123..." }
+
+# 建立 preview（本地開發用）KV namespace
+npx wrangler kv namespace create KV --preview
+# → 輸出包含 preview_id，例如：
+# { binding = "KV", preview_id = "def456..." }
+```
+
+將取得的 ID 填入 `wrangler.json`：
+
+```json
+{
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "<上方取得的 production id>",
+      "preview_id": "<上方取得的 preview_id>"
+    }
+  ]
+}
+```
+
+### 6.3 本地開發
+
+```bash
+# 啟動 Nuxt dev server（自動模擬 KV binding）
+npm run dev
+
+# 手動觸發 GitHub repos 同步到 KV
+curl -X POST http://localhost:3000/api/cron/sync-repos
+
+# 驗證 KV 讀取
+curl http://localhost:3000/api/github
+# → 應回傳 { success: true, data: [...], lastSync: "..." }
+```
+
+> **注意：** 本地 KV 資料存放在 `.wrangler/state/` 目錄，已加入 `.gitignore`。
+
+### 6.4 Build + 部署
+
+```bash
+# 一鍵 build + 部署
+npm run deploy
+
+# 或分步執行
+nuxt build                        # Build（preset 已設為 cloudflare_pages）
+wrangler pages deploy dist        # 部署到 Cloudflare Pages
+```
+
+### 6.5 正式環境 Binding 設定
+
+部署後需在 **Cloudflare Dashboard** 確認 binding：
+
+1. 進入 **Workers & Pages** → 選擇專案
+2. 點選 **Settings** → **Bindings**
+3. 確認 KV namespace binding `KV` 已正確綁定到 production namespace
+
+### 6.6 NPM Scripts 速查
+
+| Script | 用途 |
+|--------|------|
+| `npm run dev` | 本地開發（自動模擬 KV） |
+| `npm run build` | Build 產出 Cloudflare Pages 格式 |
+| `npm run preview:cf` | Build + 本地 wrangler 模擬預覽 |
+| `npm run deploy` | Build + 部署到 Cloudflare Pages |
 
 ---
 
 ## 7. 安全性 Checklist
 
 - [ ] `.env` 已加入 `.gitignore`
+- [ ] `.wrangler` 已加入 `.gitignore`
 - [ ] 敏感金鑰使用 `NUXT_` 前綴
 - [ ] 檔案上傳有做檔名清洗
 - [ ] 後台頁面已掛載認證 Middleware
