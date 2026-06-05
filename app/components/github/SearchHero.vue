@@ -9,13 +9,13 @@
       <!-- Title -->
       <div class="text-center mb-10 animate-fade-up">
         <h1 class="font-display text-3xl md:text-4xl font-bold tracking-tight mb-3">
-          <span class="text-text-muted font-mono text-lg mr-2">~/</span>GitHub 專案
+          <span class="text-text-muted font-mono text-lg mr-2"></span>GitHub 專案搜尋器
         </h1>
         <p class="text-text-secondary text-sm md:text-base">
           搜尋與瀏覽我的開源 Repositories
           <span
             v-if="totalCount > 0"
-            class="inline-flex items-center ml-2 px-2 py-0.5 text-xs font-mono bg-surface-elevated border border-border-subtle rounded-pill text-text-muted"
+            class="inline-flex items-center ml-2 px-2 py-0.5 text-xs font-mono bg-surface-elevated border border-border-subtle rounded-pill text-text-secondary"
           >
             {{ totalCount }} repos
           </span>
@@ -24,6 +24,7 @@
 
       <!-- Language pills (above search) -->
       <div class="flex items-center justify-center gap-2 flex-wrap animate-fade-up stagger-2 mb-5">
+        <span class="text-sm text-text-secondary">Click to filter: </span>
         <button
           v-for="lang in allLanguages"
           :key="lang.name"
@@ -173,33 +174,8 @@ const onBlur = () => {
   setTimeout(() => { isFocused.value = false }, 150)
 }
 
-/* ─── GitHub 語言色 ─── */
-const languageColors: Record<string, string> = {
-  JavaScript: '#f1e05a',
-  TypeScript: '#3178c6',
-  Python: '#3572A5',
-  Java: '#b07219',
-  'C#': '#178600',
-  'C++': '#f34b7d',
-  C: '#555555',
-  Go: '#00ADD8',
-  Rust: '#dea584',
-  Ruby: '#701516',
-  PHP: '#4F5D95',
-  Swift: '#F05138',
-  Kotlin: '#A97BFF',
-  Dart: '#00B4AB',
-  HTML: '#e34c26',
-  CSS: '#563d7c',
-  Shell: '#89e051',
-  Vue: '#41b883',
-  Dockerfile: '#384d54',
-  Jupyter: '#DA5B0B',
-}
-
-const getLanguageColor = (lang: string): string => {
-  return languageColors[lang] || '#8b8b8b'
-}
+/* ─── GitHub 語言色（共用） ─── */
+const { getLanguageColor } = useLanguageColors()
 </script>
 
 <style scoped>
@@ -306,21 +282,24 @@ const getLanguageColor = (lang: string): string => {
   background: transparent;
   cursor: pointer;
   white-space: nowrap;
-  transition: border-color 250ms ease, background 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.68, -0.15, 0.27, 1.15);
+  transition: border-color 250ms ease, background 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.68, -0.15, 0.27, 1.15), box-shadow 250ms ease;
 }
 .lang-pill:hover {
   border-color: var(--border-strong);
   color: var(--text-primary);
 }
 .lang-pill--active {
-  border-color: var(--border-accent);
-  background: hsla(0, 0%, 100%, 0.06);
+  border-color: hsla(0, 0%, 100%, 0.5);
+  background: hsla(0, 0%, 100%, 0.12);
   color: var(--text-primary);
-  transform: scale(1.03);
+  font-weight: 600;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px hsla(0, 0%, 100%, 0.08), inset 0 0 8px hsla(0, 0%, 100%, 0.04);
 }
-.lang-pill--sm {
-  padding: 0.25rem 0.625rem;
-  font-size: 0.6875rem;
+.lang-pill--active .lang-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  box-shadow: 0 0 6px currentColor;
 }
 
 .lang-dot {
@@ -328,6 +307,7 @@ const getLanguageColor = (lang: string): string => {
   height: 0.5rem;
   border-radius: 50%;
   flex-shrink: 0;
+  transition: width 200ms ease, height 200ms ease, box-shadow 200ms ease;
 }
 
 /* ─── Dropdown Transition ─── */
