@@ -1,19 +1,25 @@
 <template>
-  <section id="repo-grid" class="py-8">
+  <section id="repo-grid" class="pt-1 pb-4">
     <div class="container-main">
       <!-- Results count -->
       <div class="flex items-center gap-3 mb-6">
-        <span class="font-mono text-xs text-text-muted/40">{{ String(repos.length).padStart(3, '0') }}</span>
-        <span class="text-text-secondary text-sm">
+        <span class="font-mono text-xs text-text-primary/50">{{ String(repos.length).padStart(3, '0') }}</span>
+        <span class="text-text-primary/70 text-sm">
           {{ hasActiveFilter ? '篩選結果' : '所有專案' }}
         </span>
-        <div class="flex-1 h-px bg-border-subtle" />
+        <div class="flex-1 h-px bg-white/15" />
+      </div>
+
+      <!-- Clear filters (centered, prominent) -->
+      <div v-if="hasActiveFilter" class="flex justify-center mb-6">
         <button
-          v-if="hasActiveFilter"
-          class="text-xs font-mono text-text-muted border border-border-subtle rounded-sm px-2 py-1 transition-[border-color,color] duration-fast hover:border-border-accent hover:text-text-primary cursor-pointer bg-transparent"
+          class="inline-flex items-center gap-1.5 px-4 py-1.5 text-sm font-display font-medium text-text-primary border border-white/30 rounded-full bg-white/[0.06] transition-all duration-200 hover:bg-white/[0.12] hover:border-white/50 hover:shadow-[0_0_12px_hsla(0,0%,100%,0.1)] cursor-pointer"
           @click="$emit('clearFilters')"
         >
-          清除篩選
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+          清除所有篩選
         </button>
       </div>
 

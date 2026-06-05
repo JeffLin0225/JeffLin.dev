@@ -36,7 +36,7 @@ import type { GitHubRepo } from '~/server/utils/github'
 
 /* ─── SEO ─── */
 useSeoMeta({
-  title: 'GitHub — Jeff Lin',
+  title: 'GitHub Searcher — Jeff Lin',
   description: 'Explore my open-source projects on GitHub. Search and discover repositories.',
   ogTitle: 'Jeff Lin — GitHub Projects',
   ogDescription: 'Browse and search my GitHub repositories.',
