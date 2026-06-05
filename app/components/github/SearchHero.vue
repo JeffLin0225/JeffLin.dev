@@ -22,23 +22,22 @@
         </p>
       </div>
 
-      <!-- Search area: pills + search box -->
-      <div class="flex items-center justify-center gap-3 md:gap-4 animate-fade-up stagger-2">
-        <!-- Left language pills (desktop only) -->
-        <div class="hidden lg:flex items-center gap-2 flex-shrink-0">
-          <button
-            v-for="lang in leftLanguages"
-            :key="lang.name"
-            class="lang-pill"
-            :class="{ 'lang-pill--active': isSelected(lang.name) }"
-            @click="$emit('toggleLanguage', lang.name)"
-          >
-            <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
-            {{ lang.name }}
-          </button>
-        </div>
+      <!-- Language pills (above search) -->
+      <div class="flex items-center justify-center gap-2 flex-wrap animate-fade-up stagger-2 mb-5">
+        <button
+          v-for="lang in allLanguages"
+          :key="lang.name"
+          class="lang-pill"
+          :class="{ 'lang-pill--active': isSelected(lang.name) }"
+          @click="$emit('toggleLanguage', lang.name)"
+        >
+          <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
+          {{ lang.name }}
+        </button>
+      </div>
 
-        <!-- Search input wrapper -->
+      <!-- Search input -->
+      <div class="flex justify-center animate-fade-up stagger-3">
         <div class="relative w-full max-w-lg" ref="searchWrapperRef">
           <div
             class="search-box"
@@ -102,34 +101,6 @@
             </div>
           </Transition>
         </div>
-
-        <!-- Right language pills (desktop only) -->
-        <div class="hidden lg:flex items-center gap-2 flex-shrink-0">
-          <button
-            v-for="lang in rightLanguages"
-            :key="lang.name"
-            class="lang-pill"
-            :class="{ 'lang-pill--active': isSelected(lang.name) }"
-            @click="$emit('toggleLanguage', lang.name)"
-          >
-            <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
-            {{ lang.name }}
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile language pills (below search) -->
-      <div class="lg:hidden flex items-center justify-center gap-2 mt-4 flex-wrap animate-fade-up stagger-3">
-        <button
-          v-for="lang in allLanguages"
-          :key="lang.name"
-          class="lang-pill lang-pill--sm"
-          :class="{ 'lang-pill--active': isSelected(lang.name) }"
-          @click="$emit('toggleLanguage', lang.name)"
-        >
-          <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
-          {{ lang.name }}
-        </button>
       </div>
     </div>
   </section>
@@ -173,8 +144,6 @@ const isSelected = (lang: string) => props.selectedLanguages.includes(lang)
 
 /* ─── 分配語言到左右兩側 ─── */
 const allLanguages = computed(() => props.languages.slice(0, 8))
-const leftLanguages = computed(() => props.languages.slice(0, 4))
-const rightLanguages = computed(() => props.languages.slice(4, 8))
 
 /* ─── 鍵盤導航 ─── */
 const highlightNext = () => {
