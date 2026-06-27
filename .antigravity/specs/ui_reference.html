@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Component Reference — Design System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /*
+     * ═══════════════════════════════════════════════
+     *  UI REFERENCE — Design Token & Component Styles
+     *  用途：開發時直接複製此檔案的 CSS 作為基底
+     * ═══════════════════════════════════════════════
+     */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Design Tokens ─── */
+    :root {
+      /* Surfaces */
+      --bg-primary:      hsl(0, 0%, 4%);
+      --bg-secondary:    hsl(0, 0%, 8%);
+      --bg-elevated:     hsl(0, 0%, 12%);
+      --bg-hover:        hsl(0, 0%, 15%);
+
+      /* White Line Borders */
+      --border-subtle:   hsla(0, 0%, 100%, 0.08);
+      --border-default:  hsla(0, 0%, 100%, 0.12);
+      --border-strong:   hsla(0, 0%, 100%, 0.20);
+      --border-accent:   hsla(0, 0%, 100%, 0.40);
+
+      /* Text */
+      --text-primary:    hsl(0, 0%, 96%);
+      --text-secondary:  hsl(0, 0%, 60%);
+      --text-muted:      hsl(0, 0%, 38%);
+
+      /* Accent */
+      --accent-white:    hsl(0, 0%, 100%);
+      --accent-glow:     hsla(0, 0%, 100%, 0.06);
+
+      /* Status */
+      --color-success:   hsl(145, 60%, 45%);
+      --color-warning:   hsl(40, 85%, 55%);
+      --color-error:     hsl(0, 65%, 52%);
+
+      /* Typography */
+      --font-display: 'Space Grotesk', sans-serif;
+      --font-sans:    'Inter', -apple-system, sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ─── Navbar ─── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      background: hsla(0, 0%, 4%, 0.8);
+      backdrop-filter: blur(20px);
+    }
+    .logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem; font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+    .logo span { color: var(--text-muted); font-weight: 400; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: var(--text-secondary); text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 0.85rem; font-weight: 500; letter-spacing: 0.01em;
+      transition: color 250ms ease; position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1px; background: var(--accent-white);
+      transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* ─── Layout ─── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* ─── Hero Section ─── */
+    .hero {
+      padding: 5rem 0 3rem; text-align: center;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: 3.2rem; font-weight: 700;
+      letter-spacing: -0.045em; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .hero h1 .line-accent {
+      display: inline-block;
+      border-bottom: 2px solid var(--border-accent);
+      padding-bottom: 4px;
+    }
+    .hero p {
+      font-size: 1.05rem; color: var(--text-secondary);
+      max-width: 500px; margin: 0 auto 2.5rem;
+      font-weight: 300; letter-spacing: 0.01em;
+    }
+
+    /* ─── Search Box ─── */
+    .search-box { position: relative; max-width: 600px; margin: 0 auto; }
+    .search-box input {
+      width: 100%; padding: 1rem 1.25rem 1rem 3rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-default); border-radius: 0.75rem;
+      color: var(--text-primary); font-family: var(--font-sans);
+      font-size: 0.95rem; outline: none;
+      transition: border-color 250ms ease, box-shadow 250ms ease;
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .search-box input:focus {
+      border-color: var(--border-accent);
+      box-shadow: 0 0 0 4px hsla(0, 0%, 100%, 0.04);
+    }
+    .search-icon {
+      position: absolute; left: 1rem; top: 50%;
+      transform: translateY(-50%); color: var(--text-muted); font-size: 1.1rem;
+    }
+
+    /* ─── Filter Pills ─── */
+    .pills { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1.5rem 0 0; justify-content: center; }
+    .pill {
+      padding: 0.4rem 1rem; border: 1px solid var(--border-default);
+      border-radius: 9999px; font-size: 0.8rem; font-weight: 500;
+      color: var(--text-secondary); background: transparent;
+      cursor: pointer; font-family: var(--font-display);
+      transition: border-color 200ms ease, color 200ms ease, background 200ms ease;
+    }
+    .pill:hover { border-color: var(--border-accent); color: var(--text-primary); }
+    .pill.active { border-color: var(--accent-white); color: var(--text-primary); background: hsla(0,0%,100%,0.06); }
+
+    /* ─── Language Dots ─── */
+    .lang-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; vertical-align: middle; }
+    .lang-js  { background: hsl(50, 90%, 55%); }
+    .lang-ts  { background: hsl(210, 70%, 55%); }
+    .lang-py  { background: hsl(210, 55%, 45%); }
+    .lang-vue { background: hsl(153, 65%, 45%); }
+
+    /* ─── Section Header (title + line) ─── */
+    .section-header { display: flex; align-items: center; gap: 1rem; margin: 3rem 0 1.5rem; }
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.2rem; font-weight: 600;
+      letter-spacing: -0.01em; white-space: nowrap;
+    }
+    .section-header .line { flex: 1; height: 1px; background: var(--border-subtle); }
+
+    /* ─── Repo Card ─── */
+    .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; padding-bottom: 3rem; }
+    .card {
+      background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+      border-radius: 0.75rem; padding: 1.5rem; cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: border-color 300ms ease, transform 300ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 300ms ease;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px; background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+      opacity: 0; transition: opacity 300ms ease;
+    }
+    .card:hover { border-color: var(--border-strong); transform: translateY(-2px); box-shadow: 0 8px 32px hsla(0,0%,0%,0.4); }
+    .card:hover::before { opacity: 1; }
+    .card h3 { font-family: var(--font-mono); font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+    .card p  { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 1rem; }
+    .card-meta { display: flex; align-items: center; gap: 1rem; font-size: 0.75rem; color: var(--text-muted); }
+
+    /* ─── Loading Overlay (共用底層) ─── */
+    .loading-overlay {
+      position: fixed; inset: 0;
+      background: hsla(0, 0%, 4%, 0.88);
+      backdrop-filter: blur(12px);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 9999; opacity: 0; pointer-events: none;
+      transition: opacity 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .loading-overlay.visible { opacity: 1; pointer-events: auto; }
+
+    /* ─── Loading: Orbit Constellation ─── */
+    .orbit-loader { position: relative; width: 108px; height: 108px; }
+    .orbit-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 1.5px solid transparent;
+    }
+    .orbit-ring:nth-child(1) {
+      border-top-color: hsla(0,0%,100%,0.5);
+      animation: orbitSpin 0.6s cubic-bezier(0.68, -0.15, 0.27, 1.15) infinite;
+    }
+    .orbit-ring:nth-child(2) {
+      inset: 12px;
+      border-right-color: hsla(0,0%,100%,0.3);
+      animation: orbitSpin 0.8s cubic-bezier(0.68, -0.15, 0.27, 1.15) infinite reverse;
+    }
+    .orbit-ring:nth-child(3) {
+      inset: 24px;
+      border-bottom-color: hsla(0,0%,100%,0.15);
+      animation: orbitSpin 1s cubic-bezier(0.68, -0.15, 0.27, 1.15) infinite;
+    }
+    .orbit-dot {
+      position: absolute; width: 5px; height: 5px;
+      background: var(--accent-white); border-radius: 50%;
+      box-shadow: 0 0 10px hsla(0,0%,100%,0.5);
+    }
+    .orbit-ring:nth-child(1) .orbit-dot { top: -2px; left: 50%; transform: translateX(-50%); }
+    .orbit-ring:nth-child(2) .orbit-dot { right: -2px; top: 50%; transform: translateY(-50%); }
+    .orbit-ring:nth-child(3) .orbit-dot { bottom: -2px; left: 50%; transform: translateX(-50%); }
+    @keyframes orbitSpin { to { transform: rotate(360deg); } }
+
+    /* ─── Loading: Pulse Line ─── */
+    .pulse-loader { position: relative; width: 180px; height: 40px; }
+    .pulse-line {
+      position: absolute; top: 50%; left: 0; right: 0;
+      height: 1px; background: var(--border-subtle);
+    }
+    .pulse-glow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-white), transparent);
+      animation: pulseSlide 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .pulse-dot-group {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      display: flex; gap: 12px;
+    }
+    .pulse-d {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: hsla(0,0%,100%,0.2);
+      animation: pulseBeat 2s ease-in-out infinite;
+    }
+    .pulse-d:nth-child(1) { animation-delay: 0s; }
+    .pulse-d:nth-child(2) { animation-delay: 0.3s; }
+    .pulse-d:nth-child(3) { animation-delay: 0.6s; }
+    @keyframes pulseSlide { 0% { left: -60px; } 100% { left: calc(100%); } }
+    @keyframes pulseBeat {
+      0%, 100% { background: hsla(0,0%,100%,0.15); transform: scale(1); }
+      50% { background: hsla(0,0%,100%,0.7); transform: scale(1.6); box-shadow: 0 0 10px hsla(0,0%,100%,0.3); }
+    }
+
+    /* ─── Buttons ─── */
+    .btn {
+      padding: 0.625rem 1.5rem; border: 1px solid var(--border-default);
+      border-radius: 0.5rem; background: transparent; color: var(--text-primary);
+      font-family: var(--font-display); font-size: 0.85rem; font-weight: 500;
+      cursor: pointer;
+      transition: border-color 200ms ease, background 200ms ease, transform 150ms ease;
+    }
+    .btn:hover { border-color: var(--border-accent); background: var(--accent-glow); }
+    .btn:active { transform: scale(0.97); }
+    .btn-filled {
+      background: var(--accent-white); color: var(--bg-primary); border-color: transparent;
+    }
+    .btn-filled:hover { background: hsl(0,0%,90%); border-color: transparent; }
+
+    /* ─── Badges ─── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.25rem 0.75rem; border-radius: 9999px;
+      font-size: 0.75rem; font-weight: 500; border: 1px solid;
+      font-family: var(--font-display);
+    }
+    .badge-success { color: var(--color-success); border-color: hsla(145,60%,45%,0.3); background: hsla(145,60%,45%,0.08); }
+    .badge-warning { color: var(--color-warning); border-color: hsla(40,85%,55%,0.3); background: hsla(40,85%,55%,0.08); }
+    .badge-error   { color: var(--color-error);   border-color: hsla(0,65%,52%,0.3);  background: hsla(0,65%,52%,0.08); }
+
+    /* ─── Footer ─── */
+    footer {
+      padding: 2rem; text-align: center; border-top: 1px solid var(--border-subtle);
+      color: var(--text-muted); font-size: 0.8rem; font-family: var(--font-display);
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      .card-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2rem; }
+    }
+
+    /* ─── Utility: Section Divider ─── */
+    .demo-section { padding: 3rem 0; border-top: 1px solid var(--border-subtle); }
+    .btn-row { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ Loading Overlay: Orbit Constellation ═══ -->
+  <div class="loading-overlay" id="loadingOrbit">
+    <div class="orbit-loader">
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+      <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ Loading Overlay: Pulse Line ═══ -->
+  <div class="loading-overlay" id="loadingPulse">
+    <div class="pulse-loader">
+      <div class="pulse-line"></div>
+      <div class="pulse-glow"></div>
+      <div class="pulse-dot-group">
+        <div class="pulse-d"></div>
+        <div class="pulse-d"></div>
+        <div class="pulse-d"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Navbar ═══ -->
+  <nav class="navbar">
+    <div class="logo">Jeff<span>.dev</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+
+    <!-- ═══ Hero + Search ═══ -->
+    <section class="hero">
+      <h1>Explore My <span class="line-accent">Projects</span></h1>
+      <p>Search and discover repositories. Minimal, monochrome, professional.</p>
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input type="text" placeholder="Search projects...">
+      </div>
+      <div class="pills">
+        <button class="pill active">All</button>
+        <button class="pill"><span class="lang-dot lang-js"></span> JavaScript</button>
+        <button class="pill"><span class="lang-dot lang-ts"></span> TypeScript</button>
+        <button class="pill"><span class="lang-dot lang-py"></span> Python</button>
+        <button class="pill"><span class="lang-dot lang-vue"></span> Vue</button>
+      </div>
+    </section>
+
+    <!-- ═══ Repo Cards ═══ -->
+    <div class="section-header"><h2>Repositories</h2><div class="line"></div></div>
+    <div class="card-grid">
+      <div class="card">
+        <h3>nuxt-portfolio</h3>
+        <p>Personal portfolio website built with Nuxt 4 and Cloudflare Pages.</p>
+        <div class="card-meta"><span><span class="lang-dot lang-vue"></span>Vue</span><span>2 days ago</span></div>
+      </div>
+      <div class="card">
+        <h3>redis-demo</h3>
+        <p>A demo showcasing Redis caching strategies and patterns.</p>
+        <div class="card-meta"><span><span class="lang-dot lang-ts"></span>TypeScript</span><span>1 week ago</span></div>
+      </div>
+      <div class="card">
+        <h3>ai-chatbot</h3>
+        <p>Conversational AI chatbot powered by Workers AI.</p>
+        <div class="card-meta"><span><span class="lang-dot lang-js"></span>JavaScript</span><span>3 days ago</span></div>
+      </div>
+    </div>
+
+    <!-- ═══ Loading 預覽 ═══ -->
+    <div class="demo-section">
+      <div class="section-header"><h2>Loading Effects</h2><div class="line"></div></div>
+      <div class="btn-row">
+        <button class="btn" onclick="showLoading('loadingOrbit')">◎ Orbit Constellation</button>
+        <button class="btn" onclick="showLoading('loadingPulse')">— Pulse Line</button>
+      </div>
+    </div>
+
+    <!-- ═══ Buttons & Badges ═══ -->
+    <div class="demo-section">
+      <div class="section-header"><h2>Buttons & Badges</h2><div class="line"></div></div>
+      <div class="btn-row">
+        <button class="btn">Ghost Button</button>
+        <button class="btn btn-filled">Filled Button</button>
+      </div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <span class="badge badge-success">● Online</span>
+        <span class="badge badge-warning">● Syncing</span>
+        <span class="badge badge-error">● Offline</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>UI Component Reference — Space Grotesk + Dark Monochrome</footer>
+
+  <script>
+    function showLoading(id) {
+      const el = document.getElementById(id);
+      el.classList.add('visible');
+      setTimeout(() => el.classList.remove('visible'), 3000);
+    }
+  </script>
+</body>
+</html>

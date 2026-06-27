@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   /* ─── Modules ─── */
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', 'nitro-cloudflare-dev'],
 
   /* ─── Global CSS ─── */
   css: ['~/assets/css/main.css'],
@@ -16,10 +16,12 @@ export default defineNuxtConfig({
 
   /* ─── Route Rules ─── */
   routeRules: {
-    '/':          { prerender: true },
-    '/github':    { swr: 3600 },
-    '/github/**': { swr: 3600 },
-    '/api/**':    { cors: true },
+    '/': { prerender: true },
+    // SWR 僅在正式環境啟用（dev 模式會導致 payload 快取衝突）
+    ...(process.env.NODE_ENV === 'production' && {
+      '/github/**': { swr: 3600 },
+    }),
+    '/api/**': { cors: true },
   },
 
   /* ─── Runtime Config ─── */
@@ -28,6 +30,18 @@ export default defineNuxtConfig({
     public: {
       appName: 'JeffLin.dev',
     },
+  },
+
+  /* ─── Vite Optimize ─── */
+  vite: {
+    optimizeDeps: {
+      include: ['fuse.js'],
+    },
+  },
+
+  /* ─── Nitro (Cloudflare Pages) ─── */
+  nitro: {
+    preset: 'cloudflare_pages',
   },
 
   /* ─── App Head — Fonts + Meta ─── */

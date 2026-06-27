@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "jefflin-dev",
+  "compatibility_date": "2025-07-15",
+  "pages_build_output_dir": "dist",
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "17e2378c371d428389eda82c7b8d0c4e",
+      "preview_id": "8c7a7d07d6f94180b5b490f6093b59cc",
+      "remote": true
+    }
+  ]
+}

@@ -21,10 +21,17 @@
         <li v-for="link in navLinks" :key="link.path">
           <NuxtLink
             :to="link.path"
-            class="nav-link font-display text-sm font-medium tracking-wide text-text-secondary transition-colors duration-normal hover:text-text-primary"
-            :class="{ 'text-text-primary': isActive(link.path) }"
+            class="nav-link font-display text-sm font-medium tracking-wide transition-colors duration-normal"
+            :class="[
+              isActive(link.path)
+                ? 'nav-link--active text-text-primary'
+                : 'text-text-primary/70 hover:text-text-primary'
+            ]"
           >
-            <span class="font-mono text-text-muted text-xs mr-1">{{ link.prefix }}</span>
+            <span
+              class="font-mono text-xs mr-1 transition-colors duration-normal"
+              :class="isActive(link.path) ? 'text-text-primary/90' : 'text-text-primary/40'"
+            >{{ link.prefix }}</span>
             {{ link.label }}
           </NuxtLink>
         </li>
@@ -63,10 +70,18 @@
           <li v-for="link in navLinks" :key="link.path">
             <NuxtLink
               :to="link.path"
-              class="block py-3 px-4 font-display text-sm font-medium text-text-secondary rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover"
+              class="block py-3 px-4 font-display text-sm font-medium rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover"
+              :class="[
+                isActive(link.path)
+                  ? 'text-text-primary bg-white/[0.04] border-l-2 border-white/40'
+                  : 'text-text-primary/60'
+              ]"
               @click="mobileOpen = false"
             >
-              <span class="font-mono text-text-muted text-xs mr-2">{{ link.prefix }}</span>
+              <span
+                class="font-mono text-xs mr-2"
+                :class="isActive(link.path) ? 'text-text-primary/80' : 'text-text-muted'"
+              >{{ link.prefix }}</span>
               {{ link.label }}
             </NuxtLink>
           </li>
@@ -91,7 +106,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { label: 'Home', path: '/', prefix: '~/' },
-  { label: 'GitHub', path: '/github', prefix: './' },
+  { label: 'GitHub-Searcher', path: '/github', prefix: './' },
   { label: 'About', path: '/about', prefix: './' },
   { label: 'Contact', path: '/contact', prefix: './' },
 ]
@@ -123,6 +138,17 @@ watch(() => route.path, () => {
   transition: width 300ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .nav-link:hover::after {
+  width: 100%;
+}
+
+/* ─── Active page: persistent underline with soft glow ─── */
+.nav-link--active::after {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, hsla(0, 0%, 100%, 0.6) 30%, hsla(0, 0%, 100%, 0.9) 50%, hsla(0, 0%, 100%, 0.6) 70%, transparent 100%);
+  box-shadow: 0 1px 6px hsla(0, 0%, 100%, 0.15);
+}
+.nav-link--active:hover::after {
   width: 100%;
 }
 
