@@ -1,0 +1,29 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`useLanguageColors > 回傳值應與快照一致（偵測非預期變更） 1`] = `
+{
+  "getLanguageColor": [Function],
+  "languageColors": {
+    "C": "#555555",
+    "C#": "#178600",
+    "C++": "#f34b7d",
+    "CSS": "#563d7c",
+    "Dart": "#00B4AB",
+    "Dockerfile": "#384d54",
+    "Go": "#00ADD8",
+    "HTML": "#e34c26",
+    "Java": "#FF0000",
+    "JavaScript": "#f1e05a",
+    "Jupyter": "#DA5B0B",
+    "Kotlin": "#A97BFF",
+    "PHP": "#4F5D95",
+    "Python": "#3572A5",
+    "Ruby": "#701516",
+    "Rust": "#dea584",
+    "Shell": "#89e051",
+    "Swift": "#F05138",
+    "TypeScript": "#3178c6",
+    "Vue": "#41b883",
+  },
+}
+`;
