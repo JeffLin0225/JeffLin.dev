@@ -1,10 +1,10 @@
 # 🔧 TestForge 測試報告
 
-![Tests](https://img.shields.io/badge/Tests-52_Passed,_44_Failed-red)
+![Tests](https://img.shields.io/badge/Tests-52_Passed,_47_Failed-red)
 ![Coverage](https://img.shields.io/badge/Coverage-0%25-red)
 ![Threshold](https://img.shields.io/badge/Threshold-80%25-red)
 
-> 📅 報告產生時間：2026/7/10 下午5:45:25
+> 📅 報告產生時間：2026/7/25 下午5:18:47
 > 🔧 由 [TestForge](https://github.com/JeffLin0225/testforge) 自動產生
 
 ---
@@ -13,11 +13,11 @@
 
 | 指標 | 數值 |
 | --- | --- |
-| 測試檔案數 | 22 |
-| 總測試數 | 96 |
+| 測試檔案數 | 23 |
+| 總測試數 | 99 |
 | ✅ 通過 | 52 |
-| ❌ 失敗 | 44 |
-| 通過率 | 54.2% |
+| ❌ 失敗 | 47 |
+| 通過率 | 52.5% |
 
 ## 📄 測試檔案結果
 
@@ -44,6 +44,7 @@
 | `PuzzleCardFooter.nuxt.test.ts` | ✅ | 3 | 0 | 3 |
 | `PuzzleCardHeader.nuxt.test.ts` | ✅ | 4 | 0 | 4 |
 | `LoadingOverlay.nuxt.test.ts` | ❌ | 0 | 0 | 0 |
+| `index.nuxt.test.ts` | ❌ | 0 | 3 | 3 |
 | `index.nuxt.test.ts` | ✅ | 4 | 0 | 4 |
 
 ## ❌ 失敗的測試
@@ -422,6 +423,33 @@
   ```
   ReferenceError: ref is not defined
       at setup (/home/runner/work/JeffLin.dev/JeffLin.dev/app/components/home/HeroSection.vue:98:23)
+      at callWithErrorHandling (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:200:19)
+      at setupStatefulComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8078:25)
+      at setupComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8040:36)
+  ```
+
+### `index.nuxt.test.ts`
+
+- **index.vue 應該能正常掛載**
+  ```
+  ReferenceError: useSeoMeta is not defined
+      at setup (/home/runner/work/JeffLin.dev/JeffLin.dev/app/pages/craditCard/index.vue:194:1)
+      at callWithErrorHandling (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:200:19)
+      at setupStatefulComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8078:25)
+      at setupComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8040:36)
+  ```
+- **index.vue 掛載後不應有 console 錯誤**
+  ```
+  AssertionError: expected [Function] to not throw an error but 'ReferenceError: useSeoMeta is not def…' was thrown
+      at Proxy.<anonymous> (file:///home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vitest/expect/dist/index.js:1552:16)
+      at Proxy.<anonymous> (file:///home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vitest/expect/dist/index.js:1156:15)
+      at Proxy.methodWrapper (file:///home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/chai/index.js:1700:25)
+      at /home/runner/work/JeffLin.dev/JeffLin.dev/__generated_tests__/app/pages/craditCard/index.nuxt.test.ts:41:40
+  ```
+- **index.vue 渲染結果應與快照一致**
+  ```
+  ReferenceError: useSeoMeta is not defined
+      at setup (/home/runner/work/JeffLin.dev/JeffLin.dev/app/pages/craditCard/index.vue:194:1)
       at callWithErrorHandling (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:200:19)
       at setupStatefulComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8078:25)
       at setupComponent (/home/runner/work/JeffLin.dev/JeffLin.dev/node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:8040:36)

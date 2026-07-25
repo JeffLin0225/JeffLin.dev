@@ -1,11 +1,11 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
-// 來源：about.vue
-// 產生時間：2026-07-25T09:18:16.882Z
+// 來源：index.vue
+// 產生時間：2026-07-25T09:18:16.885Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import about from '../../../app/pages/about.vue';
+import index from '../../../../app/pages/craditCard/index.vue';
 
 
 // ============================================
@@ -25,12 +25,12 @@ const defaultProps = {};
 
 // 輔助函數：快速掛載元件
 function mountComponent(overrideProps = {}) {
-  return mount(about, {
+  return mount(index, {
     props: { ...defaultProps, ...overrideProps },
   });
 }
 
-describe('about.vue', () => {
+describe('index.vue', () => {
   // ===== 基本掛載 =====
   it('應該能正常掛載', () => {
     const wrapper = mountComponent();

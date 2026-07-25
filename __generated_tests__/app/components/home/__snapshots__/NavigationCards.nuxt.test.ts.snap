@@ -11,8 +11,8 @@ exports[`NavigationCards.vue > 渲染結果應與快照一致 1`] = `
       <nuxtlink data-v-815b8259="" to="/github" class="puzzle-card group top-left">
         <div data-v-815b8259="" class="card-inner">
           <puzzlecardheader data-v-815b8259="" filename="github.ts"></puzzlecardheader>
-          <h3 data-v-815b8259="" class="font-display text-lg font-semibold text-text-primary mb-2">GitHub 專案</h3>
-          <p data-v-815b8259="" class="text-text-secondary text-sm leading-relaxed mb-4">瀏覽與搜尋我的 GitHub Repositories，支援模糊搜尋與語言篩選。</p>
+          <h3 data-v-815b8259="" class="font-display text-lg font-semibold text-text-primary mb-2">Github 專案搜索器</h3>
+          <p data-v-815b8259="" class="text-text-secondary text-sm leading-relaxed mb-4">搜尋與探索我的開源專案，支援關鍵字模糊搜尋與程式語言篩選。</p>
           <puzzlecardfooter data-v-815b8259="" tags="repos,search"></puzzlecardfooter>
         </div>
       </nuxtlink>
