@@ -107,8 +107,8 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Home', path: '/', prefix: '~/' },
   { label: 'GitHub-Searcher', path: '/github', prefix: './' },
+  { label: 'CraditCard-Searcher', path: '/craditCard', prefix: './' },
   { label: 'About', path: '/about', prefix: './' },
-  { label: 'Contact', path: '/contact', prefix: './' },
 ]
 
 const isActive = (path: string): boolean => {

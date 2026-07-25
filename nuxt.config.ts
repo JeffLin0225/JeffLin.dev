@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     githubToken: '',
     public: {
       appName: 'JeffLin.dev',
+      craditCardUrl: 'https://card-6h9.pages.dev/',
     },
   },
 

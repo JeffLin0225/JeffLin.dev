@@ -13,8 +13,8 @@
         <NuxtLink to="/github" class="nav-card group card-tl">
           <div class="card-inner">
             <PuzzleCardHeader filename="github.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">GitHub 專案</h3>
-            <p class="text-text-secondary text-xs leading-relaxed mb-2">瀏覽與搜尋我的 Repositories。</p>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">Github 專案搜索器</h3>
+            <p class="text-text-secondary text-xs leading-relaxed mb-2">搜尋與探索我的開源專案，支援模糊搜尋與語言篩選。</p>
             <PuzzleCardFooter :tags="['repos', 'search']" />
           </div>
         </NuxtLink>
@@ -70,12 +70,12 @@
         </div>
 
         <!-- Bottom-Left Card -->
-        <NuxtLink to="/contact" class="nav-card group card-bl">
+        <NuxtLink to="/craditCard" class="nav-card group card-bl">
           <div class="card-inner">
-            <PuzzleCardHeader filename="contact.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">聯繫方式</h3>
-            <p class="text-text-secondary text-xs leading-relaxed mb-2">透過 GitHub 或 Email 聯繫我。</p>
-            <PuzzleCardFooter :tags="['email', 'github']" />
+            <PuzzleCardHeader filename="creditcard.ts" />
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">信用卡選擇器</h3>
+            <p class="text-text-secondary text-xs leading-relaxed mb-2">信用卡回饋速查，找到最划算的刷法。</p>
+            <PuzzleCardFooter :tags="['回饋查詢', '信用卡']" />
           </div>
         </NuxtLink>
 

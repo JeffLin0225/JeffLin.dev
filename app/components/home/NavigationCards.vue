@@ -11,8 +11,8 @@
         <NuxtLink to="/github" class="puzzle-card group top-left">
           <div class="card-inner">
             <PuzzleCardHeader filename="github.ts" />
-            <h3 class="font-display text-lg font-semibold text-text-primary mb-2">GitHub 專案</h3>
-            <p class="text-text-secondary text-sm leading-relaxed mb-4">瀏覽與搜尋我的 GitHub Repositories，支援模糊搜尋與語言篩選。</p>
+            <h3 class="font-display text-lg font-semibold text-text-primary mb-2">Github 專案搜索器</h3>
+            <p class="text-text-secondary text-sm leading-relaxed mb-4">搜尋與探索我的開源專案，支援關鍵字模糊搜尋與程式語言篩選。</p>
             <PuzzleCardFooter :tags="['repos', 'search']" />
           </div>
         </NuxtLink>
