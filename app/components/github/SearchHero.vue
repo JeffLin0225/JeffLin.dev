@@ -144,7 +144,7 @@ const localQuery = computed({
 const isSelected = (lang: string) => props.selectedLanguages.includes(lang)
 
 /* ─── 分配語言到左右兩側 ─── */
-const allLanguages = computed(() => props.languages.slice(0, 8))
+const allLanguages = computed(() => props.languages)
 
 /* ─── 鍵盤導航 ─── */
 const highlightNext = () => {

@@ -24,6 +24,7 @@ const languageColors: Record<string, string> = {
   Vue: '#41b883',
   Dockerfile: '#384d54',
   Jupyter: '#DA5B0B',
+  HCL: '#844FBA',
 }
 
 export const useLanguageColors = () => {
