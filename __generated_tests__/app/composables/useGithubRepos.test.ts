@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：useGithubRepos.ts
-// 產生時間：2026-08-23T15:38:57.941Z
+// 產生時間：2026-08-23T15:41:30.607Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { useGithubRepos } from '../../../app/composables/useGithubRepos';
