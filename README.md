@@ -73,22 +73,29 @@ npx wrangler kv key get "github:repos:lastSync" --namespace-id <KV_NAMESPACE_ID>
 
 ## Build & Deploy
 
-```bash
-# 靜態產出（輸出 Cloudflare Pages 格式到 dist/）
-npm run generate
+> ⚠️ 本專案使用 **Cloudflare Pages Functions** 執行 `/api/*`（需要 KV + GitHub Token）
+> 必須用 `npm run build`，**不能用 generate**（generate 只輸出靜態 HTML，API 無法運作）
 
-# 本地用 wrangler 模擬 Cloudflare 環境預覽（需先 generate）
+```bash
+# Build（產出 Cloudflare Pages Functions 格式到 dist/）
+npm run build
+
+# 本地用 wrangler 模擬 Cloudflare 環境預覽（需先 build）
 npm run cf:preview
 
-# 部署到 Cloudflare Pages（需先 generate）
+# 部署到 Cloudflare Pages（需先 build）
 npm run cf:deploy
 ```
 
+### Cloudflare Dashboard 設定（必要）
+- **Environment variables**: `NUXT_GITHUB_TOKEN` = GitHub PAT（read:public_repo）
+- **KV Namespace binding**: binding name `KV` → 對應正確的 namespace
+
 ## Scripts 速查
 
-| Script | 用途 | 需先 generate |
-|--------|------|--------------|
-| `npm run dev` | 本地開發（KV 自動模擬） | ❌ |
-| `npm run generate` | 靜態產出到 `dist/`（部署前必跑） | — |
-| `npm run cf:preview` | wrangler 本地預覽 | ✅ |
-| `npm run cf:deploy` | 部署到 Cloudflare Pages | ✅ |
+| Script | 用途 | 備註 |
+|--------|------|------|
+| `npm run dev` | 本地開發（KV 自動模擬） | — |
+| `npm run build` | 產出 CF Pages Functions 到 `dist/` | **部署前必跑** |
+| `npm run cf:preview` | wrangler 本地預覽 | 需先 build |
+| `npm run cf:deploy` | 部署到 Cloudflare Pages | 需先 build |
