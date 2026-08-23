@@ -1,7 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`PuzzleCardFooter.vue > 渲染結果應與快照一致 1`] = `
-"<div class="flex items-center justify-between">
-  <div class="flex gap-2"></div><span class="text-text-muted text-sm transition-[transform,color] duration-150 group-hover:text-text-primary group-hover:translate-x-1"> → </span>
-</div>"
-`;

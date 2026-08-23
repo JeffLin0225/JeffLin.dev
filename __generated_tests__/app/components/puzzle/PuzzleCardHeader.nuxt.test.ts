@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：PuzzleCardHeader.vue
-// 產生時間：2026-07-25T09:18:16.865Z
+// 產生時間：2026-08-23T15:38:57.932Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
