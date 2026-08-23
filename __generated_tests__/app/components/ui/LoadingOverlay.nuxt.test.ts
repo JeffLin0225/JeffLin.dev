@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：LoadingOverlay.vue
-// 產生時間：2026-08-23T15:41:30.594Z
+// 產生時間：2026-08-23T15:44:48.117Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
