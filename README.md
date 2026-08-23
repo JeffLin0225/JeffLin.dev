@@ -74,21 +74,21 @@ npx wrangler kv key get "github:repos:lastSync" --namespace-id <KV_NAMESPACE_ID>
 ## Build & Deploy
 
 ```bash
-# Build（輸出 Cloudflare Pages 格式到 dist/）
-npm run build
+# 靜態產出（輸出 Cloudflare Pages 格式到 dist/）
+npm run generate
 
-# 本地用 wrangler 模擬 Cloudflare 環境預覽（需先 build）
+# 本地用 wrangler 模擬 Cloudflare 環境預覽（需先 generate）
 npm run cf:preview
 
-# 部署到 Cloudflare Pages（需先 build）
+# 部署到 Cloudflare Pages（需先 generate）
 npm run cf:deploy
 ```
 
 ## Scripts 速查
 
-| Script | 用途 | 需先 build |
-|--------|------|-----------|
+| Script | 用途 | 需先 generate |
+|--------|------|--------------|
 | `npm run dev` | 本地開發（KV 自動模擬） | ❌ |
-| `npm run build` | Build 產出到 `dist/` | — |
+| `npm run generate` | 靜態產出到 `dist/`（部署前必跑） | — |
 | `npm run cf:preview` | wrangler 本地預覽 | ✅ |
 | `npm run cf:deploy` | 部署到 Cloudflare Pages | ✅ |
