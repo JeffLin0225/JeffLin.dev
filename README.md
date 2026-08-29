@@ -174,4 +174,4 @@ npm run cf:deploy
 | `npm run build` | 產出 CF Pages Functions 到 `dist/` | **部署前必跑** |
 | `npm run cf:preview` | wrangler 本地預覽 | 需先 build |
 | `npm run cf:deploy` | 部署到 Cloudflare Pages | 需先 build |
-
+| `npm run build && npm run cf:deploy` | 部署到 Cloudflare Pages | **一鍵部署** |
