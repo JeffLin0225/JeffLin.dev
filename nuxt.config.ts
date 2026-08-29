@@ -21,15 +21,25 @@ export default defineNuxtConfig({
     ...(process.env.NODE_ENV === 'production' && {
       '/github/**': { swr: 3600 },
     }),
-    '/api/**': { cors: true },
+    '/api/**': {
+      cors: {
+        origin: ['https://jefflin-dev.pages.dev'],
+        methods: ['GET', 'POST'],
+        allowHeaders: ['Content-Type', 'x-internal-token'],
+      },
+    },
   },
 
   /* ─── Runtime Config ─── */
   runtimeConfig: {
     githubToken: '',
+    // 前後端共用的內部 API Token，對應 Cloudflare 環境變數 INTERNAL_API_TOKEN
+    internalApiToken: '',
     public: {
       appName: 'JeffLin.dev',
       craditCardUrl: 'https://card-6h9.pages.dev/',
+      // 前端讀取同一個 token 用於呼叫後端 API
+      internalApiToken: '',
     },
   },
 

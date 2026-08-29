@@ -76,8 +76,14 @@ export const useGithubRepos = () => {
 
   /* ─── 取得資料（lazy: 頁面先切換，資料背景載入）─── */
   const fetchRepos = async () => {
+    const config = useRuntimeConfig()
+
     const { data, error, pending } = await useAsyncData('github-repos', () =>
-      $fetch<{ success: boolean; data: GitHubRepo[]; lastSync: string }>('/api/github'),
+      $fetch<{ success: boolean; data: GitHubRepo[]; lastSync: string }>('/api/github', {
+        headers: {
+          'x-internal-token': config.public.internalApiToken,
+        },
+      }),
       { lazy: true },
     )
 
