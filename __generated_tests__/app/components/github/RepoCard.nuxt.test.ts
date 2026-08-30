@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：RepoCard.vue
-// 產生時間：2026-08-30T08:49:21.245Z
+// 產生時間：2026-08-30T09:10:10.676Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
@@ -54,6 +54,16 @@ describe('RepoCard.vue', () => {
   });
 
   // ===== 條件渲染 =====
+  it('條件渲染 (repo.topics?.length) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (repo.topics.length > 4) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
   it('條件渲染 (repo.language) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);

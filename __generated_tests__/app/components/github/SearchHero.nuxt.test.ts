@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：SearchHero.vue
-// 產生時間：2026-08-30T08:49:21.250Z
+// 產生時間：2026-08-30T09:10:10.684Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
@@ -120,6 +120,11 @@ describe('SearchHero.vue', () => {
   });
 
   it('條件渲染 (allLanguages.length > 0) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (allLanguages.length > 0 && allTopics.length > 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
