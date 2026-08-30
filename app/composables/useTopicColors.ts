@@ -105,9 +105,68 @@ const hashTopicColor = (topic: string): string => {
 }
 
 export const useTopicColors = () => {
-  const getTopicColor = (topic: string): string => {
-    return topicColors[topic.toLowerCase()] || hashTopicColor(topic)
+  /**
+   * 解析某個 topic 的「父系 key」
+   * cloudflare-workers → cloudflare
+   * nuxt4              → nuxt
+   * vue                → vue（無父系，回傳自身）
+   */
+  const resolveParentKey = (topic: string): string => {
+    const key = topic.toLowerCase()
+
+    // 精確定義過的，本身就是根
+    if (topicColors[key]) return key
+
+    // 前綴繼承（從最長到最短）
+    const parts = key.split('-')
+    for (let i = parts.length - 1; i >= 1; i--) {
+      const prefix = parts.slice(0, i).join('-')
+      if (topicColors[prefix]) return prefix
+    }
+
+    // 數字後綴脫落（nuxt4 → nuxt）
+    const withoutDigits = key.replace(/\d+$/, '')
+    if (withoutDigits !== key && topicColors[withoutDigits]) return withoutDigits
+
+    // 找不到父系，以原始 key 作為自身根
+    return key
   }
 
-  return { getTopicColor }
+  const getTopicColor = (topic: string): string => {
+    const parent = resolveParentKey(topic)
+    return topicColors[parent] ?? hashTopicColor(topic)
+  }
+
+  /**
+   * 將 topics 陣列收斂：同一父系只留優先代表
+   * 優先順序：已精確定義的 key > 其他衍生
+   * e.g. ['cloudflare-pages', 'cloudflare', 'cloudflare-workers'] → ['cloudflare']
+   */
+  const collapseTopics = (topics: string[]): string[] => {
+    // parentKey → 最佳代表 topic 的 map
+    const grouped = new Map<string, string>()
+
+    for (const topic of topics) {
+      const parent = resolveParentKey(topic)
+      const existing = grouped.get(parent)
+
+      if (!existing) {
+        grouped.set(parent, topic)
+      } else {
+        // 優先選「精確定義過」或「較短（更根本）」的
+        const existingIsExact = !!topicColors[existing.toLowerCase()]
+        const currentIsExact = !!topicColors[topic.toLowerCase()]
+        if (currentIsExact && !existingIsExact) {
+          grouped.set(parent, topic)
+        } else if (!existingIsExact && !currentIsExact && topic.length < existing.length) {
+          grouped.set(parent, topic)
+        }
+      }
+    }
+
+    return Array.from(grouped.values())
+  }
+
+  return { getTopicColor, collapseTopics, resolveParentKey }
 }
+

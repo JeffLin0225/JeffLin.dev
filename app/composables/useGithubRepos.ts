@@ -1,5 +1,6 @@
 import Fuse, { type IFuseOptions } from 'fuse.js'
 import type { GitHubRepo } from '~/types/github'
+import { useTopicColors } from '~/composables/useTopicColors'
 
 /**
  * GitHub Repos 資料管理 Composable
@@ -44,15 +45,38 @@ export const useGithubRepos = () => {
       .map(([lang, count]) => ({ name: lang, count }))
   })
 
-  /* ─── 可用 Topics 列表（從 repos 動態生成，依出現次數排序）─── */
+  /* ─── 可用 Topics 列表（收斂同父系，依出現次數排序）─── */
   const availableTopics = computed(() => {
-    const topicMap = new Map<string, number>()
+    const { collapseTopics } = useTopicColors()
+
+    // 先統計所有原始 topic 的出現次數
+    const rawTopicMap = new Map<string, number>()
     for (const repo of repos.value) {
       for (const topic of repo.topics ?? []) {
-        topicMap.set(topic, (topicMap.get(topic) || 0) + 1)
+        rawTopicMap.set(topic, (rawTopicMap.get(topic) || 0) + 1)
       }
     }
-    return Array.from(topicMap.entries())
+
+    // 用 collapseTopics 收斂：同父系只留一個代表，count 合計
+    const allRawTopics = Array.from(rawTopicMap.keys())
+    const representatives = collapseTopics(allRawTopics)
+
+    // 算代表 pill 的合計 count（自身 + 所有同父系的 topic）
+    const { resolveParentKey } = useTopicColors()
+    const repCountMap = new Map<string, number>()
+    for (const rep of representatives) {
+      repCountMap.set(rep, 0)
+    }
+    for (const [topic, count] of rawTopicMap.entries()) {
+      const parent = resolveParentKey(topic)
+      // 找到 representative 是哪個（代表的 resolveParentKey 等於 parent）
+      const rep = representatives.find(r => resolveParentKey(r) === parent)
+      if (rep) {
+        repCountMap.set(rep, (repCountMap.get(rep) || 0) + count)
+      }
+    }
+
+    return Array.from(repCountMap.entries())
       .sort((a, b) => b[1] - a[1])
       .map(([name, count]) => ({ name, count }))
   })
@@ -86,10 +110,13 @@ export const useGithubRepos = () => {
       )
     }
 
-    // Topics 篩選（OR：包含任一選中 topic 即顯示）
+    // Topics 篩選（OR：repo 的任一 topic 父系命中選中的代表即顯示）
     if (selectedTopics.value.length > 0) {
+      const { resolveParentKey } = useTopicColors()
+      // 選中代表的父系 key 集合
+      const selectedParents = new Set(selectedTopics.value.map(t => resolveParentKey(t)))
       result = result.filter(repo =>
-        repo.topics?.some(t => selectedTopics.value.includes(t)),
+        repo.topics?.some(t => selectedParents.has(resolveParentKey(t))),
       )
     }
 
