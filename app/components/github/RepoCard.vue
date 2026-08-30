@@ -14,14 +14,28 @@
 
     <div class="card-body">
       <!-- Repo name -->
-      <h3 class="font-mono text-base font-medium text-text-primary mb-2 truncate transition-colors duration-normal group-hover:text-white">
+      <h3 class="font-mono text-base font-medium text-text-primary mb-1.5 truncate transition-colors duration-normal group-hover:text-white">
         {{ repo.name }}
       </h3>
 
       <!-- Description -->
-      <p class="text-text-secondary text-sm leading-relaxed mb-4 line-clamp-2 min-h-[2.5rem]">
+      <p class="text-text-secondary text-xs leading-relaxed mb-3 line-clamp-2 min-h-[2rem]">
         {{ repo.description || '暫無描述' }}
       </p>
+
+      <!-- Topics -->
+      <div v-if="repo.topics?.length" class="flex flex-wrap gap-1 mb-3">
+        <span
+          v-for="topic in repo.topics.slice(0, 4)"
+          :key="topic"
+          class="topic-tag"
+        >
+          <span class="topic-tag-hash" :style="{ color: getTopicColor(topic) }">#</span>{{ topic }}
+        </span>
+        <span v-if="repo.topics.length > 4" class="topic-tag topic-tag--more">
+          +{{ repo.topics.length - 4 }}
+        </span>
+      </div>
 
       <!-- Meta info -->
       <div class="flex items-center justify-between text-xs text-text-muted mt-auto">
@@ -59,6 +73,7 @@ const formattedDate = computed(() => {
 })
 
 const { getLanguageColor } = useLanguageColors()
+const { getTopicColor } = useTopicColors()
 </script>
 
 <style scoped>
@@ -123,6 +138,39 @@ const { getLanguageColor } = useLanguageColors()
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* ─── Topic Tags ─── */
+.topic-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.0625rem;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.65rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: hsla(0, 0%, 100%, 0.04);
+  border: 1px solid hsla(0, 0%, 100%, 0.08);
+  border-radius: 9999px;
+  white-space: nowrap;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.repo-card:hover .topic-tag {
+  background: hsla(0, 0%, 100%, 0.07);
+  border-color: hsla(0, 0%, 100%, 0.14);
+  color: var(--text-secondary);
+}
+
+.topic-tag-hash {
+  font-weight: 700;
+  margin-right: 0.0625rem;
+}
+
+.topic-tag--more {
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  letter-spacing: 0;
 }
 
 @keyframes fadeUp {

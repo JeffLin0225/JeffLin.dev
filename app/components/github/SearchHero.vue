@@ -1,5 +1,5 @@
 <template>
-  <section id="github-search-hero" class="relative pt-24 pb-12 md:pt-32 md:pb-16">
+  <section id="github-search-hero" class="relative pt-14 pb-10 md:pt-20 md:pb-14">
     <!-- Background radial fade -->
     <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
       <div class="absolute inset-0" style="background: radial-gradient(ellipse 60% 40% at 50% 30%, hsla(0,0%,100%,0.02), transparent 70%)" />
@@ -29,6 +29,7 @@
           <span class="filter-label">
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20M12 2a14.5 14.5 0 010 20M2 12h20"/></svg>
             Language
+            <span class="filter-hint">點擊篩選 Click to filter</span>
           </span>
           <div class="filter-pills">
             <button
@@ -44,11 +45,15 @@
           </div>
         </div>
 
+        <!-- Divider -->
+        <div class="filter-divider" v-if="allLanguages.length > 0 && allTopics.length > 0" />
+
         <!-- Topics Filter -->
         <div class="filter-group" v-if="allTopics.length > 0">
-          <span class="filter-label filter-label--topics">
+          <span class="filter-label">
             <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
             Topics
+            <span class="filter-hint">點擊篩選 Click to filter</span>
           </span>
           <div class="filter-pills">
             <button
@@ -58,7 +63,7 @@
               :class="{ 'topic-pill--active': isTopicSelected(topic.name) }"
               @click="$emit('toggleTopic', topic.name)"
             >
-              <span class="topic-hash">#</span>{{ topic.name }}
+              <span class="topic-hash" :style="{ color: getTopicColor(topic.name) }">#</span>{{ topic.name }}
             </button>
           </div>
         </div>
@@ -183,6 +188,10 @@ const isTopicSelected = (topic: string) => props.selectedTopics.includes(topic)
 const allLanguages = computed(() => props.languages)
 const allTopics = computed(() => props.topics)
 
+/* ─── 顏色 ─── */
+const { getLanguageColor } = useLanguageColors()
+const { getTopicColor } = useTopicColors()
+
 /* ─── 鍵盤導航 ─── */
 const highlightNext = () => {
   if (highlightedIndex.value < props.suggestions.length - 1) {
@@ -211,8 +220,6 @@ const onBlur = () => {
   setTimeout(() => { isFocused.value = false }, 150)
 }
 
-/* ─── GitHub 語言色（共用） ─── */
-const { getLanguageColor } = useLanguageColors()
 </script>
 
 <style scoped>
@@ -225,19 +232,19 @@ const { getLanguageColor } = useLanguageColors()
   background: hsla(0, 0%, 8%, 0.8);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-default);
+  border: 1px solid hsla(0, 0%, 100%, 0.2);
   border-radius: 0.75rem;
   transition: border-color 250ms ease, box-shadow 250ms ease;
 }
 .search-box--focused {
-  border-color: var(--border-accent);
-  box-shadow: 0 0 0 3px hsla(0, 0%, 100%, 0.04), 0 0 20px hsla(0, 0%, 100%, 0.03);
+  border-color: hsla(0, 0%, 100%, 0.5);
+  box-shadow: 0 0 0 3px hsla(0, 0%, 100%, 0.06), 0 0 20px hsla(0, 0%, 100%, 0.05);
 }
 
 .search-icon {
   width: 1.125rem;
   height: 1.125rem;
-  color: var(--text-muted);
+  color: hsla(0, 0%, 100%, 0.6);
   flex-shrink: 0;
 }
 
@@ -309,15 +316,14 @@ const { getLanguageColor } = useLanguageColors()
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.625rem;
+  gap: 1rem;
 }
 
 .filter-group {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 0.5rem;
-  flex-wrap: wrap;
 }
 
 .filter-label {
@@ -328,13 +334,31 @@ const { getLanguageColor } = useLanguageColors()
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: hsla(0, 0%, 100%, 0.75);
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-.filter-label--topics {
-  color: hsl(250, 60%, 65%);
+.filter-hint {
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: hsla(0, 0%, 100%, 0.3);
+  margin-left: 0.25rem;
+}
+
+/* ─── Gradient Divider ─── */
+.filter-divider {
+  width: 240px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsla(0, 0%, 100%, 0.15) 30%,
+    hsla(0, 0%, 100%, 0.15) 70%,
+    transparent 100%
+  );
+  border: none;
 }
 
 /* ─── Language Pills ─── */
@@ -348,15 +372,15 @@ const { getLanguageColor } = useLanguageColors()
 .lang-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  padding: 0.3125rem 0.625rem;
+  gap: 0.4rem;
+  padding: 0.4375rem 0.875rem;
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--text-secondary);
   border: 1px solid var(--border-default);
   border-radius: 9999px;
-  background: transparent;
+  background: hsla(0, 0%, 0%, 0.6);
   cursor: pointer;
   white-space: nowrap;
   transition: border-color 250ms ease, background 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.68, -0.15, 0.27, 1.15), box-shadow 250ms ease;
@@ -364,14 +388,15 @@ const { getLanguageColor } = useLanguageColors()
 .lang-pill:hover {
   border-color: var(--border-strong);
   color: var(--text-primary);
+  background: hsla(0, 0%, 0%, 0.8);
 }
 .lang-pill--active {
-  border-color: hsla(0, 0%, 100%, 0.5);
-  background: hsla(0, 0%, 100%, 0.12);
+  border-color: hsla(0, 0%, 100%, 0.4);
+  background: hsla(0, 0%, 0%, 0.85);
   color: var(--text-primary);
   font-weight: 600;
   transform: scale(1.05);
-  box-shadow: 0 0 10px hsla(0, 0%, 100%, 0.08), inset 0 0 8px hsla(0, 0%, 100%, 0.04);
+  box-shadow: 0 0 10px hsla(0, 0%, 100%, 0.06), inset 0 0 8px hsla(0, 0%, 100%, 0.03);
 }
 .lang-pill--active .lang-dot {
   width: 0.625rem;
@@ -392,42 +417,37 @@ const { getLanguageColor } = useLanguageColors()
   display: inline-flex;
   align-items: center;
   gap: 0.125rem;
-  padding: 0.3125rem 0.625rem;
+  padding: 0.4375rem 0.875rem;
   font-family: var(--font-mono, monospace);
-  font-size: 0.7rem;
+  font-size: 0.7875rem;
   font-weight: 500;
-  color: hsl(250, 50%, 70%);
-  border: 1px solid hsla(250, 50%, 50%, 0.25);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
   border-radius: 9999px;
-  background: hsla(250, 50%, 50%, 0.05);
+  background: hsla(0, 0%, 0%, 0.6);
   cursor: pointer;
   white-space: nowrap;
   transition: border-color 250ms ease, background 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.68, -0.15, 0.27, 1.15), box-shadow 250ms ease;
 }
 .topic-pill:hover {
-  border-color: hsla(250, 60%, 60%, 0.5);
-  background: hsla(250, 50%, 50%, 0.12);
-  color: hsl(250, 70%, 80%);
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+  background: hsla(0, 0%, 0%, 0.8);
 }
 .topic-pill--active {
-  border-color: hsla(250, 80%, 70%, 0.7);
-  background: hsla(250, 60%, 50%, 0.2);
-  color: hsl(255, 85%, 85%);
+  border-color: hsla(0, 0%, 100%, 0.4);
+  background: hsla(0, 0%, 0%, 0.85);
+  color: var(--text-primary);
   font-weight: 600;
   transform: scale(1.05);
-  box-shadow: 0 0 12px hsla(250, 80%, 60%, 0.2), inset 0 0 8px hsla(250, 80%, 60%, 0.08);
+  box-shadow: 0 0 10px hsla(0, 0%, 100%, 0.06), inset 0 0 8px hsla(0, 0%, 100%, 0.03);
 }
 
 .topic-hash {
-  color: hsl(250, 60%, 60%);
   font-weight: 700;
   margin-right: 0.0625rem;
-  transition: color 200ms ease;
+  /* color 由 inline style 決定，不在這裡設定 */
 }
-.topic-pill--active .topic-hash {
-  color: hsl(255, 85%, 80%);
-}
-
 
 /* ─── Dropdown Transition ─── */
 .dropdown-enter-active {
