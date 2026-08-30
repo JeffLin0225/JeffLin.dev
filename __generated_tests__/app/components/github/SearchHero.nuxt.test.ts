@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：SearchHero.vue
-// 產生時間：2026-08-29T09:06:00.204Z
+// 產生時間：2026-08-30T08:49:21.250Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
@@ -32,6 +32,11 @@ const defaultProps = {
         'name': 'Test'
     },
     'selectedLanguages': [],
+    'topics': {
+        'id': '1',
+        'name': 'Test'
+    },
+    'selectedTopics': [],
     'totalCount': 42
 };
 
@@ -69,15 +74,29 @@ describe('SearchHero.vue', () => {
     expect(wrapper.emitted('toggleLanguage')).toHaveLength(1);
   });
 
-  it('按鈕「按鈕2」應該存在', () => {
+  it('按鈕「#{{ topic.name }}」應該存在', () => {
     const wrapper = mountComponent();
     const button = wrapper.findAll('button').at(1);
     expect(button.exists()).toBe(true);
   });
 
-  it('按鈕「{{ repo.name }}                                                       {{ repo.language }}」應該存在', () => {
+  it('點擊「#{{ topic.name }}」應觸發 toggleTopic 事件', async () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(1);
+    await button.trigger('click');
+    expect(wrapper.emitted('toggleTopic')).toBeTruthy();
+    expect(wrapper.emitted('toggleTopic')).toHaveLength(1);
+  });
+
+  it('按鈕「按鈕3」應該存在', () => {
     const wrapper = mountComponent();
     const button = wrapper.findAll('button').at(2);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('按鈕「{{ repo.name }}                                                       {{ repo.language }}」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(3);
     expect(button.exists()).toBe(true);
   });
 
@@ -96,6 +115,16 @@ describe('SearchHero.vue', () => {
 
   // ===== 條件渲染 =====
   it('條件渲染 (totalCount > 0) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (allLanguages.length > 0) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (allTopics.length > 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
