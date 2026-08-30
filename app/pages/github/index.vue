@@ -8,8 +8,11 @@
       :suggestions="suggestions"
       :languages="availableLanguages"
       :selected-languages="selectedLanguages"
+      :topics="availableTopics"
+      :selected-topics="selectedTopics"
       :total-count="repos.length"
       @toggle-language="toggleLanguage"
+      @toggle-topic="toggleTopic"
       @select-repo="onSelectRepo"
     />
 
@@ -47,12 +50,15 @@ const {
   repos,
   searchQuery,
   selectedLanguages,
+  selectedTopics,
   isLoading,
   suggestions,
   filteredRepos,
   availableLanguages,
+  availableTopics,
   fetchRepos,
   toggleLanguage,
+  toggleTopic,
   clearFilters,
 } = useGithubRepos()
 
@@ -60,7 +66,7 @@ await fetchRepos()
 
 /* ─── Computed ─── */
 const hasActiveFilter = computed(
-  () => searchQuery.value.trim().length > 0 || selectedLanguages.value.length > 0,
+  () => searchQuery.value.trim().length > 0 || selectedLanguages.value.length > 0 || selectedTopics.value.length > 0,
 )
 
 /* ─── Handlers ─── */

@@ -4,12 +4,13 @@ import type { GitHubRepo } from '~/types/github'
 /**
  * GitHub Repos 資料管理 Composable
  * - SSR 取資料 → 客戶端建立 Fuse.js 索引
- * - 搜尋、語言篩選、Google 式搜尋建議
+ * - 搜尋、語言篩選、Topics 篩選、Google 式搜尋建議
  */
 export const useGithubRepos = () => {
   const repos = useState<GitHubRepo[]>('github-repos', () => [])
   const searchQuery = useState<string>('github-search', () => '')
   const selectedLanguages = useState<string[]>('github-langs', () => [])
+  const selectedTopics = useState<string[]>('github-topics', () => [])
   const isLoading = useState<boolean>('github-loading', () => false)
   const lastSync = useState<string>('github-last-sync', () => '')
 
@@ -17,8 +18,9 @@ export const useGithubRepos = () => {
   const fuseOptions: IFuseOptions<GitHubRepo> = {
     keys: [
       { name: 'name', weight: 0.4 },
-      { name: 'description', weight: 0.35 },
-      { name: 'language', weight: 0.25 },
+      { name: 'description', weight: 0.3 },
+      { name: 'language', weight: 0.15 },
+      { name: 'topics', weight: 0.15 },
     ],
     threshold: 0.3,
     distance: 200,
@@ -42,6 +44,19 @@ export const useGithubRepos = () => {
       .map(([lang, count]) => ({ name: lang, count }))
   })
 
+  /* ─── 可用 Topics 列表（從 repos 動態生成，依出現次數排序）─── */
+  const availableTopics = computed(() => {
+    const topicMap = new Map<string, number>()
+    for (const repo of repos.value) {
+      for (const topic of repo.topics ?? []) {
+        topicMap.set(topic, (topicMap.get(topic) || 0) + 1)
+      }
+    }
+    return Array.from(topicMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, count]) => ({ name, count }))
+  })
+
   /* ─── 搜尋建議（Google 式 dropdown，最多 6 筆）─── */
   const suggestions = computed(() => {
     const q = searchQuery.value.trim()
@@ -52,7 +67,7 @@ export const useGithubRepos = () => {
       .map(r => r.item)
   })
 
-  /* ─── 篩選結果（搜尋 + 語言雙重篩選）─── */
+  /* ─── 篩選結果（搜尋 + 語言 + Topics 三重篩選）─── */
   const filteredRepos = computed(() => {
     let result: GitHubRepo[]
     const q = searchQuery.value.trim()
@@ -64,10 +79,17 @@ export const useGithubRepos = () => {
       result = [...repos.value]
     }
 
-    // 語言篩選
+    // 語言篩選（OR）
     if (selectedLanguages.value.length > 0) {
       result = result.filter(repo =>
         repo.language && selectedLanguages.value.includes(repo.language),
+      )
+    }
+
+    // Topics 篩選（OR：包含任一選中 topic 即顯示）
+    if (selectedTopics.value.length > 0) {
+      result = result.filter(repo =>
+        repo.topics?.some(t => selectedTopics.value.includes(t)),
       )
     }
 
@@ -113,22 +135,37 @@ export const useGithubRepos = () => {
     }
   }
 
+  /* ─── Topics 篩選切換 ─── */
+  const toggleTopic = (topic: string) => {
+    const idx = selectedTopics.value.indexOf(topic)
+    if (idx >= 0) {
+      selectedTopics.value.splice(idx, 1)
+    } else {
+      selectedTopics.value.push(topic)
+    }
+  }
+
   const clearFilters = () => {
     searchQuery.value = ''
     selectedLanguages.value = []
+    selectedTopics.value = []
   }
 
   return {
     repos,
     searchQuery,
     selectedLanguages,
+    selectedTopics,
     isLoading,
     lastSync,
     suggestions,
     filteredRepos,
     availableLanguages,
+    availableTopics,
     fetchRepos,
     toggleLanguage,
+    toggleTopic,
     clearFilters,
   }
 }
+

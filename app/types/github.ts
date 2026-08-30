@@ -8,6 +8,7 @@ export interface GitHubRepo {
   description: string | null
   html_url: string
   language: string | null
+  topics: string[]
   created_at: string
   updated_at: string
 }

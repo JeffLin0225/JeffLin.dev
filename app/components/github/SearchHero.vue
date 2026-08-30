@@ -22,19 +22,46 @@
         </p>
       </div>
 
-      <!-- Language pills (above search) -->
-      <div class="flex items-center justify-center gap-2 flex-wrap animate-fade-up stagger-2 mb-5">
-        <span class="text-sm text-text-secondary">Click to filter: </span>
-        <button
-          v-for="lang in allLanguages"
-          :key="lang.name"
-          class="lang-pill"
-          :class="{ 'lang-pill--active': isSelected(lang.name) }"
-          @click="$emit('toggleLanguage', lang.name)"
-        >
-          <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
-          {{ lang.name }}
-        </button>
+      <!-- Filter Section -->
+      <div class="filter-section animate-fade-up stagger-2 mb-5">
+        <!-- Language Filter -->
+        <div class="filter-group" v-if="allLanguages.length > 0">
+          <span class="filter-label">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 000 20M12 2a14.5 14.5 0 010 20M2 12h20"/></svg>
+            Language
+          </span>
+          <div class="filter-pills">
+            <button
+              v-for="lang in allLanguages"
+              :key="lang.name"
+              class="lang-pill"
+              :class="{ 'lang-pill--active': isLangSelected(lang.name) }"
+              @click="$emit('toggleLanguage', lang.name)"
+            >
+              <span class="lang-dot" :style="{ background: getLanguageColor(lang.name) }" />
+              {{ lang.name }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Topics Filter -->
+        <div class="filter-group" v-if="allTopics.length > 0">
+          <span class="filter-label filter-label--topics">
+            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            Topics
+          </span>
+          <div class="filter-pills">
+            <button
+              v-for="topic in allTopics"
+              :key="topic.name"
+              class="topic-pill"
+              :class="{ 'topic-pill--active': isTopicSelected(topic.name) }"
+              @click="$emit('toggleTopic', topic.name)"
+            >
+              <span class="topic-hash">#</span>{{ topic.name }}
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- Search input -->
@@ -115,17 +142,25 @@ interface LanguageInfo {
   count: number
 }
 
+interface TopicInfo {
+  name: string
+  count: number
+}
+
 const props = defineProps<{
   modelValue: string
   suggestions: GitHubRepo[]
   languages: LanguageInfo[]
   selectedLanguages: string[]
+  topics: TopicInfo[]
+  selectedTopics: string[]
   totalCount: number
 }>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
   'toggleLanguage': [lang: string]
+  'toggleTopic': [topic: string]
   'selectRepo': [repo: GitHubRepo]
 }>()
 
@@ -141,10 +176,12 @@ const localQuery = computed({
   },
 })
 
-const isSelected = (lang: string) => props.selectedLanguages.includes(lang)
+const isLangSelected = (lang: string) => props.selectedLanguages.includes(lang)
+const isTopicSelected = (topic: string) => props.selectedTopics.includes(topic)
 
 /* ─── 分配語言到左右兩側 ─── */
 const allLanguages = computed(() => props.languages)
+const allTopics = computed(() => props.topics)
 
 /* ─── 鍵盤導航 ─── */
 const highlightNext = () => {
@@ -267,12 +304,52 @@ const { getLanguageColor } = useLanguageColors()
   background: var(--bg-hover);
 }
 
+/* ─── Filter Section Layout ─── */
+.filter-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.filter-label--topics {
+  color: hsl(250, 60%, 65%);
+}
+
 /* ─── Language Pills ─── */
+.filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  justify-content: center;
+}
+
 .lang-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  padding: 0.375rem 0.75rem;
+  padding: 0.3125rem 0.625rem;
   font-family: var(--font-display);
   font-size: 0.75rem;
   font-weight: 500;
@@ -309,6 +386,48 @@ const { getLanguageColor } = useLanguageColors()
   flex-shrink: 0;
   transition: width 200ms ease, height 200ms ease, box-shadow 200ms ease;
 }
+
+/* ─── Topic Pills ─── */
+.topic-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  padding: 0.3125rem 0.625rem;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: hsl(250, 50%, 70%);
+  border: 1px solid hsla(250, 50%, 50%, 0.25);
+  border-radius: 9999px;
+  background: hsla(250, 50%, 50%, 0.05);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 250ms ease, background 250ms ease, color 250ms ease, transform 250ms cubic-bezier(0.68, -0.15, 0.27, 1.15), box-shadow 250ms ease;
+}
+.topic-pill:hover {
+  border-color: hsla(250, 60%, 60%, 0.5);
+  background: hsla(250, 50%, 50%, 0.12);
+  color: hsl(250, 70%, 80%);
+}
+.topic-pill--active {
+  border-color: hsla(250, 80%, 70%, 0.7);
+  background: hsla(250, 60%, 50%, 0.2);
+  color: hsl(255, 85%, 85%);
+  font-weight: 600;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px hsla(250, 80%, 60%, 0.2), inset 0 0 8px hsla(250, 80%, 60%, 0.08);
+}
+
+.topic-hash {
+  color: hsl(250, 60%, 60%);
+  font-weight: 700;
+  margin-right: 0.0625rem;
+  transition: color 200ms ease;
+}
+.topic-pill--active .topic-hash {
+  color: hsl(255, 85%, 80%);
+}
+
 
 /* ─── Dropdown Transition ─── */
 .dropdown-enter-active {

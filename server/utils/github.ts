@@ -13,6 +13,7 @@ interface GitHubApiRepo {
   description: string | null
   html_url: string
   language: string | null
+  topics: string[]
   created_at: string
   updated_at: string
   fork: boolean
@@ -60,6 +61,7 @@ export async function fetchGitHubRepos(token?: string): Promise<GitHubRepo[]> {
       description: repo.description,
       html_url: repo.html_url,
       language: repo.language,
+      topics: repo.topics ?? [],
       created_at: repo.created_at,
       updated_at: repo.updated_at,
     }))
