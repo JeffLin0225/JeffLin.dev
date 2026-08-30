@@ -4,7 +4,7 @@
 ![Coverage](https://img.shields.io/badge/Coverage-Unknown%25-red)
 ![Threshold](https://img.shields.io/badge/Threshold-80%25-red)
 
-> 📅 報告產生時間：2026/8/30 下午5:10:14
+> 📅 報告產生時間：2026/8/30 下午5:36:06
 > 🔧 由 [TestForge](https://github.com/JeffLin0225/testforge) 自動產生
 
 ---
