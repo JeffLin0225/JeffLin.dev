@@ -67,6 +67,10 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: 'hsl(0, 0%, 4%)' },
       ],
       link: [
+        // ─── Favicon ───
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon2.svg' },
+        { rel: 'shortcut icon', href: '/favicon2.svg' },
+        // ─── Fonts ───
         {
           rel: 'preconnect',
           href: 'https://fonts.googleapis.com',

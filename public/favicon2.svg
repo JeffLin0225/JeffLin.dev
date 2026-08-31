@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- 外圈白銀沉穩漸層（無刺眼眩光，柔和低調金屬質感） -->
+    <linearGradient id="ringGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="30%" stop-color="#D1D5E0" />
+      <stop offset="60%" stop-color="#7B8294" />
+      <stop offset="85%" stop-color="#C2C7D4" />
+      <stop offset="100%" stop-color="#E8ECF5" />
+    </linearGradient>
+
+    <!-- 內圈過渡沉角邊 -->
+    <linearGradient id="ringInnerBevel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0A0B0E" />
+      <stop offset="50%" stop-color="#2D3038" />
+      <stop offset="100%" stop-color="#050608" />
+    </linearGradient>
+
+    <!-- 曜石黑漸層背景 -->
+    <radialGradient id="bgObsidian" cx="46%" cy="38%" r="68%">
+      <stop offset="0%" stop-color="#1A1B20" />
+      <stop offset="50%" stop-color="#0E0F12" />
+      <stop offset="85%" stop-color="#050506" />
+      <stop offset="100%" stop-color="#000000" />
+    </radialGradient>
+
+    <!-- 3D J - 正面漸層（透亮白銀鏡面） -->
+    <linearGradient id="jFront" x1="15%" y1="0%" x2="85%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="45%" stop-color="#F8FAFD" />
+      <stop offset="85%" stop-color="#E1E5EE" />
+      <stop offset="100%" stop-color="#C8CFDE" />
+    </linearGradient>
+
+    <!-- 3D J - 頂部等角斜切面（受光亮面） -->
+    <linearGradient id="jTop" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E4E8F2" />
+      <stop offset="50%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F4F7FC" />
+    </linearGradient>
+
+    <!-- 3D J - 右側金屬厚度面（適中淺銀/鈦金屬調） -->
+    <linearGradient id="jSideRight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9CA3B5" />
+      <stop offset="35%" stop-color="#72798C" />
+      <stop offset="70%" stop-color="#4E5463" />
+      <stop offset="100%" stop-color="#2B2E38" />
+    </linearGradient>
+
+    <!-- 3D J - 內弧立體陰影面 -->
+    <linearGradient id="jInnerCurve" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3D4250" />
+      <stop offset="50%" stop-color="#676E80" />
+      <stop offset="100%" stop-color="#9EA6BA" />
+    </linearGradient>
+
+    <!-- 立體投影 -->
+    <filter id="j3DShadow" x="-30%" y="-30%" width="170%" height="170%">
+      <feDropShadow dx="12" dy="20" stdDeviation="16" flood-color="#000000" flood-opacity="0.85" />
+      <feDropShadow dx="3" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+  </defs>
+
+  <!-- ① 外圈沉穩白銀金屬漸層環 (寬度精巧，無強烈刺眼光暈) -->
+  <circle cx="256" cy="256" r="246" fill="url(#ringGrad)" />
+
+  <!-- ② 內圈過渡切角 -->
+  <circle cx="256" cy="256" r="226" fill="url(#ringInnerBevel)" />
+
+  <!-- ③ 曜石黑漸層背景 -->
+  <circle cx="256" cy="256" r="222" fill="url(#bgObsidian)" />
+
+  <!-- ④ 等角 3D 立體 J (適中粗細，完美塊體結構) -->
+  <g transform="translate(15, -4)" filter="url(#j3DShadow)">
+
+    <!-- 4.1 側面立體厚度拉伸面 (Extrusions) -->
+    <!-- 垂直主幹右側面 -->
+    <path d="M 278 142 L 314 168 L 314 310 L 278 284 Z" fill="url(#jSideRight)" />
+    <!-- 頂部斜切面 -->
+    <polygon points="232,142 268,168 314,168 278,142" fill="url(#jTop)" stroke="#FFFFFF" stroke-width="0.8" />
+    <!-- 底部彎鉤底面厚度 -->
+    <path d="M 178 344 C 218 392 278 362 278 284 L 314 310 C 314 402 232 434 192 380 Z" fill="url(#jSideRight)" />
+    <!-- 鉤端頂部小切面 -->
+    <polygon points="146,286 178,308 200,290 168,268" fill="url(#jTop)" stroke="#FFFFFF" stroke-width="0.6" />
+    <!-- 彎鉤內側面 -->
+    <path d="M 168 268 L 200 290 C 200 318 228 322 238 284 L 238 172 L 206 148 L 206 254 C 196 278 178 276 168 268 Z" fill="url(#jInnerCurve)" opacity="0.9" />
+
+    <!-- 4.2 正面主切面 Front Face (適中厚度，清晰精準) -->
+    <path d="M 232 142 
+             L 278 142 
+             L 278 284 
+             C 278 342 232 366 178 344 
+             C 149 330 137 307 146 286 
+             L 168 268 
+             C 166 282 176 295 190 295 
+             C 210 295 230 280 230 254 
+             L 230 142 Z"
+          fill="url(#jFront)"
+          stroke="#FFFFFF"
+          stroke-width="2"
+          stroke-linejoin="round" />
+
+    <!-- 4.3 正面倒角細節高光 (Bevel Highlights) -->
+    <line x1="277" y1="143" x2="277" y2="284" stroke="#FFFFFF" stroke-width="1.6" opacity="0.9" />
+    <line x1="233" y1="143" x2="277" y2="143" stroke="#FFFFFF" stroke-width="2" />
+  </g>
+</svg>
