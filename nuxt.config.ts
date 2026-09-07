@@ -23,7 +23,7 @@ export default defineNuxtConfig({
     }),
     '/api/**': {
       cors: {
-        origin: ['https://jefflin-dev.pages.dev'],
+        origin: ['https://jxlin.dev'],
         methods: ['GET', 'POST'],
         allowHeaders: ['Content-Type', 'x-internal-token'],
       },
@@ -37,7 +37,7 @@ export default defineNuxtConfig({
     internalApiToken: '',
     public: {
       appName: 'JeffLin.dev',
-      craditCardUrl: 'https://card-6h9.pages.dev/',
+      craditCardUrl: 'https://card.jxlin.dev/',
       // 前端讀取同一個 token 用於呼叫後端 API
       internalApiToken: '',
     },

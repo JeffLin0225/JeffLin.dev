@@ -1,6 +1,6 @@
 # JeffLin.dev
 
-> 個人作品集網站 — [jefflin-dev.pages.dev](https://jefflin-dev.pages.dev)
+> 個人作品集網站 — [jxlin.dev](https://jxlin.dev)
 
 **Tech Stack**: Nuxt 4 · Tailwind CSS · Cloudflare Pages · Cloudflare KV · Fuse.js
 
