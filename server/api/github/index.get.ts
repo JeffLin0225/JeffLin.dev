@@ -9,7 +9,7 @@
  */
 export default defineEventHandler(async (event) => {
   const kv = useKV(event)
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
 
   // 1. 嘗試從 KV 讀取
   if (kv) {

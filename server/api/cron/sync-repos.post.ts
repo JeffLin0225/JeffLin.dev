@@ -4,7 +4,7 @@
  */
 export default defineEventHandler(async (event) => {
   const kv = useKV(event)
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig(event)
 
   try {
     const data = await fetchGitHubRepos(config.githubToken || undefined)
