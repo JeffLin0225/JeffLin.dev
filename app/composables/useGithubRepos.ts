@@ -130,6 +130,8 @@ export const useGithubRepos = () => {
     const { data, error, pending } = await useAsyncData('github-repos', () =>
       $fetch<{ success: boolean; data: GitHubRepo[]; lastSync: string }>('/api/github', {
         headers: {
+          // 使用 public config，對應 NUXT_PUBLIC_INTERNAL_API_TOKEN
+          // server middleware 也讀同一個值，確保前後端 token 一致
           'x-internal-token': config.public.internalApiToken,
         },
       }),

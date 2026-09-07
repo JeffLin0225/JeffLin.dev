@@ -2,7 +2,8 @@
  * Nitro Middleware — API 存取保護
  *
  * 所有 /api/ 路由都必須帶上正確的 X-Internal-Token header
- * Token 從 Cloudflare Pages 環境變數 INTERNAL_API_TOKEN 讀取
+ * Token 從 Cloudflare Pages 環境變數 NUXT_PUBLIC_INTERNAL_API_TOKEN 讀取
+ * （使用 public config，前後端共用同一個值）
  *
  * 排除：OPTIONS preflight（CORS 協商）
  */
@@ -16,7 +17,8 @@ export default defineEventHandler((event) => {
   if (event.method === 'OPTIONS') return
 
   const config = useRuntimeConfig(event)
-  const expectedToken = config.internalApiToken
+  // 使用 public config，與前端 composable 帶的 header 來源相同
+  const expectedToken = config.public.internalApiToken
 
   // 若未設定 token（本機開發時允許跳過），直接放行
   if (!expectedToken) {
