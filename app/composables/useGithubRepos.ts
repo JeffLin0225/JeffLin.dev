@@ -61,24 +61,32 @@ export const useGithubRepos = () => {
     const allRawTopics = Array.from(rawTopicMap.keys())
     const representatives = collapseTopics(allRawTopics)
 
-    // 算代表 pill 的合計 count（自身 + 所有同父系的 topic）
+    // 算代表 pill 的合計 count 與關聯的 repos 清單
     const { resolveParentKey } = useTopicColors()
     const repCountMap = new Map<string, number>()
+    const repReposMap = new Map<string, Set<string>>()
     for (const rep of representatives) {
       repCountMap.set(rep, 0)
+      repReposMap.set(rep, new Set())
     }
-    for (const [topic, count] of rawTopicMap.entries()) {
-      const parent = resolveParentKey(topic)
-      // 找到 representative 是哪個（代表的 resolveParentKey 等於 parent）
-      const rep = representatives.find(r => resolveParentKey(r) === parent)
-      if (rep) {
-        repCountMap.set(rep, (repCountMap.get(rep) || 0) + count)
+    for (const repo of repos.value) {
+      for (const topic of repo.topics ?? []) {
+        const parent = resolveParentKey(topic)
+        const rep = representatives.find(r => resolveParentKey(r) === parent)
+        if (rep) {
+          repCountMap.set(rep, (repCountMap.get(rep) || 0) + 1)
+          repReposMap.get(rep)?.add(repo.name)
+        }
       }
     }
 
     return Array.from(repCountMap.entries())
       .sort((a, b) => b[1] - a[1])
-      .map(([name, count]) => ({ name, count }))
+      .map(([name, count]) => ({
+        name,
+        count,
+        repos: Array.from(repReposMap.get(name) || []),
+      }))
   })
 
   /* ─── 搜尋建議（Google 式 dropdown，最多 6 筆）─── */
