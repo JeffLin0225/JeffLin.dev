@@ -36,7 +36,7 @@ export default defineNuxtConfig({
     // 前後端共用的內部 API Token，對應 Cloudflare 環境變數 INTERNAL_API_TOKEN
     internalApiToken: '',
     public: {
-      appName: 'JeffLin.dev',
+      appName: 'JXlin.dev',
       craditCardUrl: 'https://card.jxlin.dev/',
       // 前端讀取同一個 token 用於呼叫後端 API
       internalApiToken: '',
@@ -59,11 +59,11 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'zh-Hant' },
-      title: 'Jeff Lin — Full-Stack Developer',
+      title: 'Jia-Xian Lin (林家賢) — Full-Stack Developer',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Jeff Lin — Full-Stack Developer. Building digital experiences with modern web technologies.' },
+        { name: 'description', content: 'Jia-Xian Lin (林家賢 / Jeff) — Full-Stack Developer. Building digital experiences with modern web technologies.' },
         { name: 'theme-color', content: 'hsl(0, 0%, 4%)' },
       ],
       link: [

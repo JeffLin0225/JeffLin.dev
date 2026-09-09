@@ -9,7 +9,7 @@
       <!-- Logo -->
       <NuxtLink to="/" class="group flex items-center gap-0.5" aria-label="Home">
         <span class="font-display text-xl font-bold tracking-tight text-text-primary">
-          Jeff
+          JXlin
         </span>
         <span class="font-display text-xl font-normal text-text-muted transition-colors duration-normal group-hover:text-text-secondary">
           .dev

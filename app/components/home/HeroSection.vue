@@ -31,8 +31,10 @@
 
         <!-- Center Piece: Self Introduction -->
         <div class="hero-center flex flex-col items-center justify-center">
-          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-8 animate-fade-up stagger-1">
-            Hi, I'm
+          <h1 class="font-display text-4xl md:text-5xl lg:text-7xl font-bold tracking-tighter leading-[1.05] mb-8 animate-fade-up stagger-1 text-center">
+            Hi,
+            <span class="text-text-muted text-lg md:text-2xl lg:text-3xl font-normal tracking-normal mx-1.5 align-middle">我是</span>
+            <span class="text-text-primary mr-2">家賢</span>
             <span class="relative inline-block group cursor-default whitespace-nowrap">
               <span class="bg-clip-text text-transparent bg-gradient-to-b from-text-primary to-text-secondary transition-all duration-700 font-mono">{{ scrambledName }}</span>
               <span class="absolute -bottom-1 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-border-accent to-transparent opacity-70 transition-opacity duration-700 group-hover:opacity-100" />
@@ -96,7 +98,7 @@
 
 <script setup lang="ts">
 const displayedText = ref('')
-const originalName = 'Jeff Lin'
+const originalName = 'Jia-Xian Lin'
 const scrambledName = ref(originalName)
 let scrambleInterval: ReturnType<typeof setInterval> | null = null
 const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>'
@@ -120,9 +122,10 @@ const startScramble = () => {
   }, 45)
 }
 const phrases = [
+  '我是林家賢，也可以叫我 Jeff',
   'Full-Stack Developer 全端開發',
   'Vue / Nuxt 愛好者',
-  'Java / Spring Boot & Python / FastApi',
+  'Java / Spring Boot & Python / FastAPI',
 ]
 let phraseIndex = 0
 let charIndex = 0

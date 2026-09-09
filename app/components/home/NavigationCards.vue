@@ -30,8 +30,8 @@
             <div class="flex items-center gap-4 mb-5">
               <div class="w-14 h-14 rounded-full border border-border-default bg-surface-elevated flex items-center justify-center font-display text-xl font-bold text-text-secondary">JL</div>
               <div>
-                <h3 class="font-display text-lg font-bold text-text-primary">Jeff Lin</h3>
-                <p class="font-mono text-xs text-text-muted">Full-Stack Developer</p>
+                <h3 class="font-display text-lg font-bold text-text-primary">林家賢 (Jia-Xian Lin)</h3>
+                <p class="font-mono text-xs text-text-muted">Full-Stack Developer · Jeff</p>
               </div>
             </div>
             <p class="text-text-secondary text-sm leading-relaxed mb-5">熱衷於打造高品質的網頁應用程式，專注於使用者體驗與程式碼品質。從前端到後端，從雲端到 DevOps，持續學習與精進。</p>

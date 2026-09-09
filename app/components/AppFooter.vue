@@ -8,7 +8,7 @@
       <!-- Copyright and Info (Original Position: Left) -->
       <div class="md:absolute md:left-0 flex items-center gap-2 font-mono text-xs text-text-primary">
         <span class="hidden xl:inline text-text-primary/40">═══</span>
-        <span>&copy; {{ currentYear }} Jeff Lin</span>
+        <span>&copy; {{ currentYear }} Jia-Xian (Jeff) Lin</span>
         <span class="text-text-primary/30">│</span>
         <span>使用 Nuxt 建構</span>
       </div>
