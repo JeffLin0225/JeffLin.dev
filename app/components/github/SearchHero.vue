@@ -86,14 +86,15 @@
 
       <!-- Filter Section -->
       <div class="filter-section animate-fade-up stagger-3">
-        <!-- Language Pills row -->
-        <div v-if="allLanguages.length > 0" class="filter-row">
-          <div class="filter-row-label">
-            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Language Pills -->
+        <div v-if="allLanguages.length > 0" class="filter-group">
+          <div class="filter-group-label">
+            <svg class="w-3.5 h-3.5 label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="10"/>
               <path d="M12 2a14.5 14.5 0 000 20M12 2a14.5 14.5 0 010 20M2 12h20"/>
             </svg>
-            Language
+            <span class="label-title">Language</span>
+            <span class="filter-hint">點擊篩選 Click to filter</span>
           </div>
           <div class="pills-row">
             <button
@@ -112,121 +113,133 @@
 
         <div v-if="allLanguages.length > 0 && allTopics.length > 0" class="filter-sep" />
 
-        <!-- Topic Category Pills -->
-        <div v-if="allTopics.length > 0" class="filter-row topics-filter-row">
-          <div class="filter-row-label">
-            <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <!-- Topics -->
+        <div v-if="allTopics.length > 0" class="filter-group">
+          <div class="filter-group-label">
+            <svg class="w-3.5 h-3.5 label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
               <line x1="7" y1="7" x2="7.01" y2="7"/>
             </svg>
-            Topics
+            <span class="label-title">Topics</span>
+            <span class="filter-hint">點擊篩選 Click to filter</span>
           </div>
 
-          <!-- Selected topics strip -->
-          <Transition name="fade-fast">
-            <div v-if="selectedTopics.length > 0" class="selected-strip">
-              <span class="selected-strip-label">已選 {{ selectedTopics.length }} 項：</span>
-              <div class="selected-strip-chips">
-                <button
-                  v-for="topic in selectedTopics"
-                  :key="topic"
-                  class="selected-chip"
-                  @click="$emit('toggleTopic', topic)"
-                  :title="`點擊取消 ${topic}`"
-                >
-                  <span class="topic-hash" :style="{ color: getTopicColor(topic) }">#</span>
-                  <span class="font-mono text-xs">{{ topic }}</span>
-                  <svg class="w-3 h-3 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
-                  </svg>
-                </button>
-                <button class="clear-all-btn" @click="clearAllTopics">全部清除</button>
-              </div>
-            </div>
-          </Transition>
-
-          <div class="category-pills-row">
-            <div
-              v-for="cat in categories"
-              :key="cat.id"
-              class="cat-pill-wrap"
-              :data-catid="cat.id"
-              @mouseenter="activeCategoryId = cat.id"
-              @mouseleave="activeCategoryId = null"
-            >
-              <button
-                class="cat-pill"
-                :class="{
-                  'cat-pill--active': activeCategoryId === cat.id,
-                  'cat-pill--has-selected': categorySelectedCount(cat.id) > 0,
-                }"
-              >
-                <span class="cat-icon">
-                  <svg v-if="cat.icon === 'sparkles'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
-                  </svg>
-                  <svg v-else-if="cat.icon === 'cloud'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
-                  </svg>
-                  <svg v-else-if="cat.icon === 'bolt'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                  </svg>
-                  <svg v-else-if="cat.icon === 'brain'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04ZM14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04Z"/>
-                  </svg>
-                  <svg v-else-if="cat.icon === 'network'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="16" y="16" width="6" height="6" rx="1"/>
-                    <rect x="2" y="16" width="6" height="6" rx="1"/>
-                    <rect x="9" y="2" width="6" height="6" rx="1"/>
-                    <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/>
-                    <path d="M12 12V8"/>
-                  </svg>
-                  <svg v-else class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>
-                  </svg>
-                </span>
-
-                <span class="cat-label">{{ cat.label }}</span>
-
-                <span v-if="categorySelectedCount(cat.id) > 0" class="cat-selected-badge">
-                  {{ categorySelectedCount(cat.id) }}
-                </span>
-                <span v-else class="cat-count">{{ getCategoryTopicsCount(cat.id) }}</span>
-              </button>
-
-              <!-- Floating dropdown panel -->
-              <Transition name="cat-dropdown">
-                <div
-                  v-if="activeCategoryId === cat.id"
-                  class="cat-dropdown-panel"
-                  :style="getDropdownStyle(cat.id)"
-                >
-                  <div class="cat-panel-header">
-                    <span class="cat-panel-title">{{ cat.label }}</span>
-                    <button
-                      v-if="categorySelectedCount(cat.id) > 0"
-                      class="cat-panel-clear"
-                      @click.stop="clearCategoryTopics(cat.id)"
-                    >
-                      清除 {{ categorySelectedCount(cat.id) }}
-                    </button>
-                  </div>
-                  <div class="cat-panel-pills">
-                    <button
-                      v-for="topic in getCategoryTopics(cat.id)"
-                      :key="topic.name"
-                      class="topic-pill"
-                      :class="{ 'topic-pill--active': isTopicSelected(topic.name) }"
-                      :style="{ '--pill-accent': getTopicColor(topic.name) }"
-                      @click="$emit('toggleTopic', topic.name)"
-                    >
-                      <span class="topic-hash" :style="{ color: getTopicColor(topic.name) }">#</span>
-                      <span class="pill-title">{{ topic.name }}</span>
-                      <span class="pill-count">{{ topic.count }}</span>
-                    </button>
-                  </div>
+          <!-- Inline row: selected strip + category pills -->
+          <div class="topics-inline-row">
+            <!-- Selected strip -->
+            <Transition name="fade-fast">
+              <div v-if="selectedTopics.length > 0" class="selected-strip">
+                <span class="selected-strip-label">已選 {{ selectedTopics.length }} 項：</span>
+                <div class="selected-strip-chips">
+                  <button
+                    v-for="topic in selectedTopics"
+                    :key="topic"
+                    class="selected-chip"
+                    @click="$emit('toggleTopic', topic)"
+                    :title="`點擊取消 ${topic}`"
+                  >
+                    <span class="topic-hash" :style="{ color: getTopicColor(topic) }">#</span>
+                    <span class="font-mono text-xs">{{ topic }}</span>
+                    <svg class="w-3 h-3 text-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/>
+                    </svg>
+                  </button>
+                  <button class="clear-all-btn" @click="clearAllTopics">全部清除</button>
                 </div>
-              </Transition>
+              </div>
+            </Transition>
+
+            <!-- Category pills -->
+            <div class="category-pills-row">
+              <div
+                v-for="cat in categories"
+                :key="cat.id"
+                class="cat-pill-wrap"
+                :data-catid="cat.id"
+                @mouseenter="activeCategoryId = cat.id"
+                @mouseleave="activeCategoryId = null"
+              >
+                <button
+                  class="cat-pill"
+                  :class="{
+                    'cat-pill--active': activeCategoryId === cat.id,
+                    'cat-pill--has-selected': categorySelectedCount(cat.id) > 0,
+                  }"
+                >
+                  <span class="cat-icon">
+                    <svg v-if="cat.icon === 'sparkles'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/>
+                    </svg>
+                    <svg v-else-if="cat.icon === 'cloud'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+                    </svg>
+                    <svg v-else-if="cat.icon === 'bolt'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    <svg v-else-if="cat.icon === 'brain'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-2.04ZM14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-2.04Z"/>
+                    </svg>
+                    <svg v-else-if="cat.icon === 'network'" class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <rect x="16" y="16" width="6" height="6" rx="1"/>
+                      <rect x="2" y="16" width="6" height="6" rx="1"/>
+                      <rect x="9" y="2" width="6" height="6" rx="1"/>
+                      <path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/>
+                      <path d="M12 12V8"/>
+                    </svg>
+                    <svg v-else class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/>
+                    </svg>
+                  </span>
+
+                  <span class="cat-label">{{ cat.label }}</span>
+
+                  <span v-if="categorySelectedCount(cat.id) > 0" class="cat-selected-badge">
+                    {{ categorySelectedCount(cat.id) }}
+                  </span>
+                  <span v-else class="cat-count">{{ getCategoryTopicsCount(cat.id) }}</span>
+
+                  <!-- Arrow: default ↑, rotates ↓ on hover/active -->
+                  <span class="cat-arrow" :class="{ 'cat-arrow--open': activeCategoryId === cat.id }">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-3 h-3">
+                      <path d="M18 15l-6-6-6 6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                </button>
+
+                <!-- Floating dropdown panel -->
+                <Transition name="cat-dropdown">
+                  <div
+                    v-if="activeCategoryId === cat.id"
+                    class="cat-dropdown-panel"
+                    :style="getDropdownStyle(cat.id)"
+                  >
+                    <div class="cat-panel-header">
+                      <span class="cat-panel-title">{{ cat.label }}</span>
+                      <button
+                        v-if="categorySelectedCount(cat.id) > 0"
+                        class="cat-panel-clear"
+                        @click.stop="clearCategoryTopics(cat.id)"
+                      >
+                        清除 {{ categorySelectedCount(cat.id) }}
+                      </button>
+                    </div>
+                    <div class="cat-panel-pills">
+                      <button
+                        v-for="topic in getCategoryTopics(cat.id)"
+                        :key="topic.name"
+                        class="topic-pill"
+                        :class="{ 'topic-pill--active': isTopicSelected(topic.name) }"
+                        :style="{ '--pill-accent': getTopicColor(topic.name) }"
+                        @click="$emit('toggleTopic', topic.name)"
+                      >
+                        <span class="topic-hash" :style="{ color: getTopicColor(topic.name) }">#</span>
+                        <span class="pill-title">{{ topic.name }}</span>
+                        <span class="pill-count">{{ topic.count }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </Transition>
+              </div>
             </div>
           </div>
         </div>
@@ -449,46 +462,74 @@ const onBlur = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 1rem;
   width: 100%;
 }
-.filter-row {
+
+.filter-group {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   width: 100%;
   max-width: 1000px;
-  flex-wrap: wrap;
-  justify-content: center;
 }
-/* Topics row: allow selected strip + category pills in one line, wrapping */
-.topics-filter-row {
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-.filter-row-label {
+
+.filter-group-label {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: hsla(0, 0%, 100%, 0.4);
-  white-space: nowrap;
+  gap: 0.4rem;
+  user-select: none;
+}
+
+.label-icon {
+  color: #ffffff;
+  filter: drop-shadow(0 0 6px hsla(0, 0%, 100%, 0.45));
   flex-shrink: 0;
 }
+
+.label-title {
+  font-family: var(--font-mono);
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: linear-gradient(180deg, #ffffff 15%, hsla(0, 0%, 100%, 0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px hsla(0, 0%, 100%, 0.35));
+}
+
+.filter-hint {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: none;
+  color: hsla(0, 0%, 100%, 0.4);
+  margin-left: 0.25rem;
+}
+
+.topics-inline-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+}
+
 .pills-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
   justify-content: center;
 }
+
 .filter-sep {
-  width: min(100%, 700px);
+  width: min(100%, 640px);
   height: 1px;
-  background: linear-gradient(90deg, transparent 0%, hsla(0,0%,100%,0.1) 30%, hsla(0,0%,100%,0.1) 70%, transparent 100%);
+  margin: 0.125rem 0;
+  background: linear-gradient(90deg, transparent 0%, hsla(0,0%,100%,0.08) 25%, hsla(0,0%,100%,0.08) 75%, transparent 100%);
 }
 
 /* Language pills */
@@ -597,7 +638,17 @@ const onBlur = () => {
   box-shadow: 0 0 8px rgba(52,211,153,0.5);
 }
 
-/* Arrow removed */
+/* Cat arrow: default ↑, rotates ↓ on hover/active */
+.cat-arrow {
+  display: flex;
+  align-items: center;
+  color: hsla(0,0%,100%,0.4);
+  margin-left: 0.1rem;
+  transition: transform 220ms cubic-bezier(0.16,1,0.3,1), color 200ms ease;
+  transform: rotate(0deg);
+}
+.cat-pill:hover .cat-arrow { color: hsla(0,0%,100%,0.75); }
+.cat-arrow--open { transform: rotate(180deg); color: #fff; }
 
 /* Floating dropdown — JS controls left/right anchor dynamically */
 .cat-dropdown-panel {
@@ -618,24 +669,7 @@ const onBlur = () => {
   border-radius: 1rem;
   box-shadow: 0 16px 48px hsla(0,0%,0%,0.65), 0 0 0 1px hsla(0,0%,100%,0.04);
 }
-.cat-dropdown-panel::before {
-  content: '';
-  position: absolute;
-  bottom: 100%;
-  left: 1.5rem;
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent hsla(0,0%,100%,0.15) transparent;
-}
-.cat-dropdown-panel::after {
-  content: '';
-  position: absolute;
-  bottom: calc(100% - 1px);
-  left: 1.5rem;
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent hsla(0,0%,7%,0.97) transparent;
-}
+/* No dropdown caret arrow */
 .cat-panel-header {
   display: flex;
   align-items: center;
