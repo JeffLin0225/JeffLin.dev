@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：SearchHero.vue
-// 產生時間：2026-09-09T15:22:27.871Z
+// 產生時間：2026-09-10T16:24:44.100Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
@@ -60,44 +60,83 @@ describe('SearchHero.vue', () => {
 
   // ===== Props 渲染 =====
   // ===== 按鈕互動 =====
-  it('按鈕「{{ lang.name }}」應該存在', () => {
+  it('按鈕「按鈕1」應該存在', () => {
     const wrapper = mountComponent();
     const button = wrapper.findAll('button').at(0);
-    expect(button.exists()).toBe(true);
-  });
-
-  it('點擊「{{ lang.name }}」應觸發 toggleLanguage 事件', async () => {
-    const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(0);
-    await button.trigger('click');
-    expect(wrapper.emitted('toggleLanguage')).toBeTruthy();
-    expect(wrapper.emitted('toggleLanguage')).toHaveLength(1);
-  });
-
-  it('按鈕「#{{ topic.name }}」應該存在', () => {
-    const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(1);
-    expect(button.exists()).toBe(true);
-  });
-
-  it('點擊「#{{ topic.name }}」應觸發 toggleTopic 事件', async () => {
-    const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(1);
-    await button.trigger('click');
-    expect(wrapper.emitted('toggleTopic')).toBeTruthy();
-    expect(wrapper.emitted('toggleTopic')).toHaveLength(1);
-  });
-
-  it('按鈕「按鈕3」應該存在', () => {
-    const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(2);
     expect(button.exists()).toBe(true);
   });
 
   it('按鈕「{{ repo.name }}                                                       {{ repo.language }}」應該存在', () => {
     const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(1);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('按鈕「{{ lang.name }}               {{ lang.count }}」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(2);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('點擊「{{ lang.name }}               {{ lang.count }}」應觸發 toggleLanguage 事件', async () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(2);
+    await button.trigger('click');
+    expect(wrapper.emitted('toggleLanguage')).toBeTruthy();
+    expect(wrapper.emitted('toggleLanguage')).toHaveLength(1);
+  });
+
+  it('按鈕「#                     {{ topic }}」應該存在', () => {
+    const wrapper = mountComponent();
     const button = wrapper.findAll('button').at(3);
     expect(button.exists()).toBe(true);
+  });
+
+  it('點擊「#                     {{ topic }}」應觸發 toggleTopic 事件', async () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(3);
+    await button.trigger('click');
+    expect(wrapper.emitted('toggleTopic')).toBeTruthy();
+    expect(wrapper.emitted('toggleTopic')).toHaveLength(1);
+  });
+
+  it('按鈕「全部清除」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(4);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('點擊「全部清除」不應崩潰', async () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(4);
+    await button.trigger('click');
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('按鈕「0,                   }"                 >                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            {{ cat.label }}                     0" class="cat-selected-badge">                     {{ categorySelectedCount(cat.id) }}                                      {{ getCategoryTopicsCount(cat.id) }}」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(5);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('按鈕「0"                         class="cat-panel-clear"                         @click.stop="clearCategoryTopics(cat.id)"                       >                         清除 {{ categorySelectedCount(cat.id) }}」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(6);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('按鈕「#                         {{ topic.name }}                         {{ topic.count }}」應該存在', () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(7);
+    expect(button.exists()).toBe(true);
+  });
+
+  it('點擊「#                         {{ topic.name }}                         {{ topic.count }}」應觸發 toggleTopic 事件', async () => {
+    const wrapper = mountComponent();
+    const button = wrapper.findAll('button').at(7);
+    await button.trigger('click');
+    expect(wrapper.emitted('toggleTopic')).toBeTruthy();
+    expect(wrapper.emitted('toggleTopic')).toHaveLength(1);
   });
 
   // ===== 表單輸入 =====
@@ -119,6 +158,21 @@ describe('SearchHero.vue', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
+  it('條件渲染 (localQuery) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (isFocused && suggestions.length > 0) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (repo.language) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
   it('條件渲染 (allLanguages.length > 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
@@ -134,17 +188,27 @@ describe('SearchHero.vue', () => {
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('條件渲染 (localQuery) 不同值不應崩潰', () => {
+  it('條件渲染 (selectedTopics.length > 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('條件渲染 (isFocused && suggestions.length > 0) 不同值不應崩潰', () => {
+  it('條件渲染 (cat.icon === 'sparkles') 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
 
-  it('條件渲染 (repo.language) 不同值不應崩潰', () => {
+  it('條件渲染 (categorySelectedCount(cat.id) > 0) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (activeCategoryId === cat.id) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (categorySelectedCount(cat.id) > 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
