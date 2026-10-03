@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：useTopicColors.ts
-// 產生時間：2026-09-10T16:24:44.124Z
+// 產生時間：2026-10-03T13:46:05.518Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { useTopicColors } from '../../../app/composables/useTopicColors';

@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：contact.vue
-// 產生時間：2026-09-10T16:24:44.130Z
+// 產生時間：2026-10-03T13:46:05.523Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';

@@ -1,11 +1,11 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
-// 來源：EmptyState.vue
-// 產生時間：2026-10-03T13:46:05.487Z
+// 來源：stats.vue
+// 產生時間：2026-10-03T13:46:05.530Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import EmptyState from '../../../../app/components/github/EmptyState.vue';
+import stats from '../../../app/pages/stats.vue';
 
 
 // ============================================
@@ -21,18 +21,16 @@ vi.stubGlobal('definePageMeta', vi.fn());
 // ============================================
 
 // Mock Props 資料
-const defaultProps = {
-    'noData': true
-};
+const defaultProps = {};
 
 // 輔助函數：快速掛載元件
 function mountComponent(overrideProps = {}) {
-  return mount(EmptyState, {
+  return mount(stats, {
     props: { ...defaultProps, ...overrideProps },
   });
 }
 
-describe('EmptyState.vue', () => {
+describe('stats.vue', () => {
   // ===== 基本掛載 =====
   it('應該能正常掛載', () => {
     const wrapper = mountComponent();
@@ -43,9 +41,23 @@ describe('EmptyState.vue', () => {
     expect(() => mountComponent()).not.toThrow();
   });
 
-  // ===== Props 渲染 =====
   // ===== 條件渲染 =====
-  it('條件渲染 (noData) 不同值不應崩潰', () => {
+  it('條件渲染 (stats?.updatedAt) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (stats && !stats.configured) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (isDev) 不同值不應崩潰', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.exists()).toBe(true);
+  });
+
+  it('條件渲染 (isEmpty) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });

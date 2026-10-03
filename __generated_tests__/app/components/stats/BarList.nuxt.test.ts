@@ -1,11 +1,11 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
-// 來源：EmptyState.vue
-// 產生時間：2026-10-03T13:46:05.487Z
+// 來源：BarList.vue
+// 產生時間：2026-10-03T13:46:05.504Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import EmptyState from '../../../../app/components/github/EmptyState.vue';
+import BarList from '../../../../app/components/stats/BarList.vue';
 
 
 // ============================================
@@ -22,17 +22,22 @@ vi.stubGlobal('definePageMeta', vi.fn());
 
 // Mock Props 資料
 const defaultProps = {
-    'noData': true
+    'title': 'Test Value',
+    'rows': {
+        'id': '1',
+        'name': 'Test'
+    },
+    'emptyText': 'Test Value'
 };
 
 // 輔助函數：快速掛載元件
 function mountComponent(overrideProps = {}) {
-  return mount(EmptyState, {
+  return mount(BarList, {
     props: { ...defaultProps, ...overrideProps },
   });
 }
 
-describe('EmptyState.vue', () => {
+describe('BarList.vue', () => {
   // ===== 基本掛載 =====
   it('應該能正常掛載', () => {
     const wrapper = mountComponent();
@@ -44,8 +49,18 @@ describe('EmptyState.vue', () => {
   });
 
   // ===== Props 渲染 =====
+  it('應該渲染 prop: title', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.text()).toContain(String(defaultProps.title));
+  });
+
+  it('應該渲染 prop: emptyText', () => {
+    const wrapper = mountComponent();
+    expect(wrapper.text()).toContain(String(defaultProps.emptyText));
+  });
+
   // ===== 條件渲染 =====
-  it('條件渲染 (noData) 不同值不應崩潰', () => {
+  it('條件渲染 (rows.length === 0) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });
