@@ -8,6 +8,8 @@ declare module 'h3' {
       env: {
         /** Cloudflare KV — 主要鍵值對儲存 */
         KV: KVNamespace
+        /** Analytics Engine — 流量統計資料集（唯寫，查詢走 SQL API）*/
+        ANALYTICS: AnalyticsEngineDataset
         // 未來擴充：
         // MY_BUCKET: R2Bucket
         // AI: Ai

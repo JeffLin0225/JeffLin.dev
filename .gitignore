@@ -26,3 +26,4 @@ logs
 
 # Wrangler local dev state
 .wrangler
+.dev.vars

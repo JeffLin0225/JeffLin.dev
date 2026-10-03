@@ -10,5 +10,11 @@
       "preview_id": "8c7a7d07d6f94180b5b490f6093b59cc",
       "remote": true
     }
+  ],
+  "analytics_engine_datasets": [
+    {
+      "binding": "ANALYTICS",
+      "dataset": "jxlin_pageviews"
+    }
   ]
 }

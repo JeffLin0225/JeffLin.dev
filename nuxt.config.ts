@@ -35,6 +35,13 @@ export default defineNuxtConfig({
     githubToken: '',
     // 前後端共用的內部 API Token，對應 Cloudflare 環境變數 INTERNAL_API_TOKEN
     internalApiToken: '',
+    // ─── 流量統計（server-only，絕對不可移到 public）───
+    // 訪客雜湊用的 salt，對應 NUXT_VISITOR_SALT
+    // 外洩可暴力反推出原始 IP（IPv4 空間小）
+    visitorSalt: '',
+    // Analytics Engine SQL API 查詢用，對應 NUXT_CF_ACCOUNT_ID / NUXT_CF_ANALYTICS_TOKEN
+    cfAccountId: '',
+    cfAnalyticsToken: '',
     public: {
       appName: 'JXlin.dev',
       craditCardUrl: 'https://card.jxlin.dev/',

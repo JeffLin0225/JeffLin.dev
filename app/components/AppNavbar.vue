@@ -109,6 +109,7 @@ const navLinks: NavLink[] = [
   { label: 'GitHub-Searcher', path: '/github', prefix: './' },
   { label: 'CraditCard-Searcher', path: '/craditCard', prefix: './' },
   { label: 'About', path: '/about', prefix: './' },
+  { label: '流量', path: '/stats', prefix: './' },
 ]
 
 const isActive = (path: string): boolean => {
