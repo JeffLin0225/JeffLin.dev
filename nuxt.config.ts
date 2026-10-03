@@ -16,7 +16,8 @@ export default defineNuxtConfig({
 
   /* ─── Route Rules ─── */
   routeRules: {
-    '/': { prerender: true },
+    // 首頁不 prerender：靜態頁會把 build 當下的 runtimeConfig.public 烤死，
+    // 跟正式環境實際的環境變數脫鉤（曾因此讓 /stats 的 token 在 SPA 導航時失效）
     // SWR 僅在正式環境啟用（dev 模式會導致 payload 快取衝突）
     ...(process.env.NODE_ENV === 'production' && {
       '/github/**': { swr: 3600 },

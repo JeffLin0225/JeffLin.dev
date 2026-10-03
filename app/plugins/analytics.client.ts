@@ -2,8 +2,8 @@
  * 流量統計 beacon（client-only）
  *
  * 為什麼是前端 beacon 而不是 server middleware：
- * nuxt.config.ts 的 routeRules 把 '/' 設為 prerender，首頁是 CDN 邊緣回應的靜態檔，
- * 不會進入 Nitro server，用 middleware 會漏掉流量最大的那一頁。
+ * client-side 路由切換（SPA 導航）不會重新打伺服器，用 middleware 只能抓到
+ * 第一次進站的那個請求，之後的頁面切換全部漏掉。
  *
  * 為什麼不用 navigator.sendBeacon：
  * 它無法設定自訂 header，會被 server/middleware/auth.ts 擋成 401。
