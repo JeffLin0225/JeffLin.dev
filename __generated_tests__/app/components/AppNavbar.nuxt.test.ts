@@ -1,7 +1,7 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
 // 來源：AppNavbar.vue
-// 產生時間：2026-10-04T08:12:09.262Z
+// 產生時間：2026-10-04T10:27:03.569Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
@@ -41,22 +41,13 @@ describe('AppNavbar.vue', () => {
     expect(() => mountComponent()).not.toThrow();
   });
 
-  // ===== 按鈕互動 =====
-  it('按鈕「按鈕1」應該存在', () => {
+  // ===== 條件渲染 =====
+  it('條件渲染 (link.dividerBefore) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(0);
-    expect(button.exists()).toBe(true);
-  });
-
-  it('點擊「按鈕1」不應崩潰', async () => {
-    const wrapper = mountComponent();
-    const button = wrapper.findAll('button').at(0);
-    await button.trigger('click');
     expect(wrapper.exists()).toBe(true);
   });
 
-  // ===== 條件渲染 =====
-  it('條件渲染 (mobileOpen) 不同值不應崩潰', () => {
+  it('條件渲染 (link.external) 不同值不應崩潰', () => {
     const wrapper = mountComponent();
     expect(wrapper.exists()).toBe(true);
   });

@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：useAnalyticsSQL.ts
-// 產生時間：2026-10-04T08:12:09.345Z
+// 產生時間：2026-10-04T10:27:03.649Z
 // ============================================
 import { describe, it, expect, vi } from 'vitest';
 import { queryAnalyticsSQL } from '../../../server/utils/useAnalyticsSQL';
