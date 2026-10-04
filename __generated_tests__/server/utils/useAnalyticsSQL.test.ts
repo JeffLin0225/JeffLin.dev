@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：useAnalyticsSQL.ts
-// 產生時間：2026-10-03T13:46:05.546Z
+// 產生時間：2026-10-04T08:12:09.345Z
 // ============================================
 import { describe, it, expect, vi } from 'vitest';
 import { queryAnalyticsSQL } from '../../../server/utils/useAnalyticsSQL';
@@ -16,7 +16,7 @@ describe('queryAnalyticsSQL', () => {
   });
 
   it('呼叫時應回傳 Promise', () => {
-    const result = queryAnalyticsSQL({ id: "1" }, "test");
+    const result = queryAnalyticsSQL("test", { id: "1" });
     expect(result).toBeInstanceOf(Promise);
     result.catch(() => {});
   });
