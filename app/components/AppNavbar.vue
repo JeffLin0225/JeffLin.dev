@@ -18,23 +18,41 @@
 
       <!-- Desktop Nav Links -->
       <ul class="hidden md:flex items-center gap-8 list-none">
-        <li v-for="link in navLinks" :key="link.path">
-          <NuxtLink
-            :to="link.path"
-            class="nav-link font-display text-sm font-medium tracking-wide transition-colors duration-normal"
-            :class="[
-              isActive(link.path)
-                ? 'nav-link--active text-text-primary'
-                : 'text-text-primary/70 hover:text-text-primary'
-            ]"
-          >
-            <span
-              class="font-mono text-xs mr-1 transition-colors duration-normal"
-              :class="isActive(link.path) ? 'text-text-primary/90' : 'text-text-primary/40'"
-            >{{ link.prefix }}</span>
-            {{ link.label }}
-          </NuxtLink>
-        </li>
+        <template v-for="link in navLinks" :key="link.path">
+          <!-- 分隔線：切開功能頁（Home / GitHub / CraditCard）與非功能頁（About / 流量 / 架構圖）-->
+          <li v-if="link.dividerBefore" aria-hidden="true" role="presentation">
+            <span class="block w-px h-4 bg-border-strong" />
+          </li>
+          <li>
+            <a
+              v-if="link.external"
+              :href="link.path"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="nav-link font-display text-sm font-medium tracking-wide transition-colors duration-normal text-text-primary/70 hover:text-text-primary"
+            >
+              <span class="font-mono text-xs mr-1 transition-colors duration-normal text-text-primary/40">{{ link.prefix }}</span>
+              {{ link.label }}
+              <span class="text-text-primary/40" aria-hidden="true">↗</span>
+            </a>
+            <NuxtLink
+              v-else
+              :to="link.path"
+              class="nav-link font-display text-sm font-medium tracking-wide transition-colors duration-normal"
+              :class="[
+                isActive(link.path)
+                  ? 'nav-link--active text-text-primary'
+                  : 'text-text-primary/70 hover:text-text-primary'
+              ]"
+            >
+              <span
+                class="font-mono text-xs mr-1 transition-colors duration-normal"
+                :class="isActive(link.path) ? 'text-text-primary/90' : 'text-text-primary/40'"
+              >{{ link.prefix }}</span>
+              {{ link.label }}
+            </NuxtLink>
+          </li>
+        </template>
       </ul>
 
       <!-- Mobile Menu Toggle -->
@@ -67,24 +85,41 @@
         class="md:hidden border-t border-border-subtle glass"
       >
         <ul class="container-main py-4 flex flex-col gap-1 list-none">
-          <li v-for="link in navLinks" :key="link.path">
-            <NuxtLink
-              :to="link.path"
-              class="block py-3 px-4 font-display text-sm font-medium rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover"
-              :class="[
-                isActive(link.path)
-                  ? 'text-text-primary bg-white/[0.04] border-l-2 border-white/40'
-                  : 'text-text-primary/60'
-              ]"
-              @click="mobileOpen = false"
-            >
-              <span
-                class="font-mono text-xs mr-2"
-                :class="isActive(link.path) ? 'text-text-primary/80' : 'text-text-muted'"
-              >{{ link.prefix }}</span>
-              {{ link.label }}
-            </NuxtLink>
-          </li>
+          <template v-for="link in navLinks" :key="link.path">
+            <!-- 分隔線：切開功能頁（Home / GitHub / CraditCard）與非功能頁（About / 流量 / 架構圖）-->
+            <li v-if="link.dividerBefore" aria-hidden="true" role="presentation" class="my-2 border-t border-border-subtle" />
+            <li>
+              <a
+                v-if="link.external"
+                :href="link.path"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block py-3 px-4 font-display text-sm font-medium rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover text-text-primary/60"
+                @click="mobileOpen = false"
+              >
+                <span class="font-mono text-xs mr-2 text-text-muted">{{ link.prefix }}</span>
+                {{ link.label }}
+                <span class="text-text-muted" aria-hidden="true">↗</span>
+              </a>
+              <NuxtLink
+                v-else
+                :to="link.path"
+                class="block py-3 px-4 font-display text-sm font-medium rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover"
+                :class="[
+                  isActive(link.path)
+                    ? 'text-text-primary bg-white/[0.04] border-l-2 border-white/40'
+                    : 'text-text-primary/60'
+                ]"
+                @click="mobileOpen = false"
+              >
+                <span
+                  class="font-mono text-xs mr-2"
+                  :class="isActive(link.path) ? 'text-text-primary/80' : 'text-text-muted'"
+                >{{ link.prefix }}</span>
+                {{ link.label }}
+              </NuxtLink>
+            </li>
+          </template>
         </ul>
       </div>
     </Transition>
@@ -102,14 +137,24 @@ interface NavLink {
   label: string
   path: string
   prefix: string
+  /** 外部連結：render 成 <a target="_blank">，不走 NuxtLink / isActive */
+  external?: boolean
+  /** 在這個項目前插入視覺分隔線，用來切開功能頁與非功能頁 */
+  dividerBefore?: boolean
 }
 
 const navLinks: NavLink[] = [
   { label: 'Home', path: '/', prefix: '~/' },
   { label: 'GitHub-Searcher', path: '/github', prefix: './' },
   { label: 'CraditCard-Searcher', path: '/craditCard', prefix: './' },
-  { label: 'About', path: '/about', prefix: './' },
+  { label: 'About', path: '/about', prefix: './', dividerBefore: true },
   { label: '流量', path: '/stats', prefix: './' },
+  {
+    label: '互動架構圖',
+    path: 'https://public.jxlin.dev/video/architecture.html',
+    prefix: './',
+    external: true,
+  },
 ]
 
 const isActive = (path: string): boolean => {

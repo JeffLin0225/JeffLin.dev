@@ -9,7 +9,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "cf:preview": "wrangler dev",
-    "cf:deploy": "npm run build && wrangler deploy"
+    "cf:deploy": "npm run build && wrangler deploy",
+    "r2:deploy-arch": "wrangler r2 object put jxlindev/video/architecture.html --file architecture.html --content-type \"text/html; charset=utf-8\" --remote"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
