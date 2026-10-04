@@ -13,9 +13,13 @@ import type { H3Event } from 'h3'
 
 const CACHE_KEY = 'stats:public:v1'
 const STALE_KEY = 'stats:public:stale'
+/** 背景重算中的標記，避免快取過期瞬間每個請求都各打一輪查詢 */
+const LOCK_KEY = 'stats:public:refreshing'
 const CACHE_TTL_SECONDS = 600
 /** 查詢失敗時用的備援資料保留 7 天 */
 const STALE_TTL_SECONDS = 7 * 24 * 60 * 60
+/** 鎖故意不手動解除，靠過期自然釋放 —— 查詢失敗時順便變成重試間隔 */
+const LOCK_TTL_SECONDS = 120
 
 const RANGE_DAYS = 30
 
@@ -63,7 +67,23 @@ export default defineEventHandler(async (event): Promise<StatsPayload> => {
     }
   }
 
-  /* ─── 2. 查 Analytics Engine ─── */
+  /* ─── 2. 快取過期：先回舊資料，重算丟到背景 ───
+   *
+   * Analytics Engine 的查詢要打 Cloudflare REST API，是這支 endpoint 唯一的慢路徑。
+   * 若讓快取過期後的第一個訪客同步等它跑完，那個人會明顯感覺到頁面停住，
+   * 而他等到的「最新」資料對一個流量統計頁來說並沒有多重要。
+   * 所以改成立刻回備援、重算在背景跑，下一個訪客就會拿到新的。
+   * 頁面上的「最後更新」時間會誠實反映出這份資料偏舊。
+   */
+  if (kv) {
+    const stale = await kv.get<StatsPayload>(STALE_KEY, 'json').catch(() => null)
+    if (stale) {
+      await refreshInBackground(event, kv)
+      return stale
+    }
+  }
+
+  /* ─── 3. 連備援都沒有（首次啟用或備援已過期）：只能同步查一次 ─── */
   let payload: StatsPayload
   try {
     payload = await queryStats(event)
@@ -74,33 +94,50 @@ export default defineEventHandler(async (event): Promise<StatsPayload> => {
     }
 
     console.error('[API /api/stats] Analytics query failed:', e)
-
-    // 有過期備援就回備援，別讓頁面壞掉
-    if (kv) {
-      try {
-        const stale = await kv.get<StatsPayload>(STALE_KEY, 'json')
-        if (stale) return stale
-      } catch { /* 備援也讀不到就往下回 503 */ }
-    }
-
     throw createError({ statusCode: 503, statusMessage: 'Stats temporarily unavailable' })
   }
 
-  /* ─── 3. 回寫快取與備援 ─── */
-  if (kv) {
-    const json = JSON.stringify(payload)
-    try {
-      await Promise.all([
-        kv.put(CACHE_KEY, json, { expirationTtl: CACHE_TTL_SECONDS }),
-        kv.put(STALE_KEY, json, { expirationTtl: STALE_TTL_SECONDS }),
-      ])
-    } catch (e) {
-      console.warn('[API /api/stats] KV write failed:', e)
-    }
-  }
+  if (kv) await writeCache(kv, payload)
 
   return payload
 })
+
+/** 回寫快取與備援 */
+const writeCache = async (kv: KVNamespace, payload: StatsPayload) => {
+  const json = JSON.stringify(payload)
+  try {
+    await Promise.all([
+      kv.put(CACHE_KEY, json, { expirationTtl: CACHE_TTL_SECONDS }),
+      kv.put(STALE_KEY, json, { expirationTtl: STALE_TTL_SECONDS }),
+    ])
+  } catch (e) {
+    console.warn('[API /api/stats] KV write failed:', e)
+  }
+}
+
+/**
+ * 在回應送出後才重算，訪客不會等到它。
+ *
+ * 鎖是 best-effort —— KV 沒有 atomic CAS，所以無法保證絕對只有一個，
+ * 但足以讓快取過期瞬間湧入的請求收斂成大約一次查詢，而不是每個請求都打六道 SQL。
+ */
+const refreshInBackground = async (event: H3Event, kv: KVNamespace) => {
+  try {
+    if (await kv.get(LOCK_KEY)) return
+    await kv.put(LOCK_KEY, '1', { expirationTtl: LOCK_TTL_SECONDS })
+  } catch {
+    // 鎖拿不到就放棄這次重算，等下一個請求 —— 寧可資料舊一輪也不要重複打查詢
+    return
+  }
+
+  event.waitUntil((async () => {
+    try {
+      await writeCache(kv, await queryStats(event))
+    } catch (e) {
+      console.error('[API /api/stats] Background refresh failed:', e)
+    }
+  })())
+}
 
 /**
  * 六個查詢並行發出

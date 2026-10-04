@@ -1,5 +1,7 @@
 <template>
   <div class="container-main py-20">
+    <UiLoadingOverlay :visible="isLoading" />
+
     <!-- ─── Header ─── -->
     <header class="mb-12 animate-fade-up">
       <h1 class="font-display text-4xl font-bold tracking-tight mb-3">
@@ -178,7 +180,7 @@ useSeoMeta({
   description: '公開的 jxlin.dev 流量統計，由自建的分析系統收集 —— 不收集 IP 位址。',
 })
 
-const { stats, hasError, isEmpty, trend, trendMax, fetchStats } = useSiteStats()
+const { stats, isLoading, hasError, isEmpty, trend, trendMax, fetchStats } = useSiteStats()
 
 await fetchStats()
 
