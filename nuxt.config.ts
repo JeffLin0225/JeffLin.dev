@@ -58,9 +58,14 @@ export default defineNuxtConfig({
     },
   },
 
-  /* ─── Nitro (Cloudflare Pages) ─── */
+  /* ─── Nitro (Cloudflare Workers) ─── */
+  // Workers 而非 Pages：Pages 不支援 cron trigger，流量統計需要定時重算。
+  //
+  // 刻意不設 cloudflare.deployConfig —— 一旦開啟，dashboard 上的設定
+  // 「包含環境變數」會被停用並丟棄（Nitro 官方說明），而本站所有 token
+  // 都放在 dashboard 上。
   nitro: {
-    preset: 'cloudflare_pages',
+    preset: 'cloudflare_module',
   },
 
   /* ─── App Head — Fonts + Meta ─── */

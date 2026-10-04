@@ -8,8 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "cf:preview": "wrangler pages dev dist",
-    "cf:deploy": "wrangler pages deploy dist"
+    "cf:preview": "wrangler dev",
+    "cf:deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.14.0",
