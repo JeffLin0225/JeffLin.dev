@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：analytics.ts
-// 產生時間：2026-10-04T10:27:03.639Z
+// 產生時間：2026-10-07T15:49:58.802Z
 // ============================================
 import { describe, it, expect, vi } from 'vitest';
 import { isBot, normalizePath, refererHost, taipeiDay, hashVisitor, parseUserAgent, truncateToBytes } from '../../../server/utils/analytics';
