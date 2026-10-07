@@ -151,7 +151,7 @@ const navLinks: NavLink[] = [
   { label: '流量', path: '/stats', prefix: './' },
   {
     label: '互動架構圖',
-    path: 'https://public.jxlin.dev/video/architecture.html',
+    path: 'https://public.jxlin.dev/img/jxlin_architecture.html',
     prefix: './',
     external: true,
   },

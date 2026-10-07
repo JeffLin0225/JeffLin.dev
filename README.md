@@ -4,9 +4,9 @@
 
 **Tech Stack**: Nuxt 4 · Tailwind CSS · Cloudflare Workers · Cloudflare KV · Analytics Engine · Fuse.js
 
-[![查看互動架構圖](https://img.shields.io/badge/📐%20互動架構圖-點此開啟新分頁-6366F1?style=for-the-badge)](https://public.jxlin.dev/video/architecture.html)
+[![查看互動架構圖](https://img.shields.io/badge/📐%20互動架構圖-點此開啟新分頁-6366F1?style=for-the-badge)](https://public.jxlin.dev/img/jxlin_architecture.html)
 
-11 個元件、信任邊界、主要讀取路徑，每個節點都連回原始碼行號。
+11 個元件、5 個信任邊界、主要讀取路徑與 cron 寫入路徑，每個節點都連回原始碼行號。檔案是 repo 根目錄的 `jxlin_architecture.html`，部署在 R2 的 `img/jxlin_architecture.html`（見下方〈互動架構圖〉）。
 
 ---
 
@@ -46,6 +46,7 @@ JeffLin.dev/
 │       ├── useAnalyticsSQL.ts  # Analytics Engine SQL API 封裝
 │       └── useKV.ts            # KV binding 封裝
 ├── docs/analytics-spec.md      # 統計系統欄位規格
+├── jxlin_architecture.html     # 互動架構圖（單檔，Archify 產出；不隨 Worker 部署，另傳 R2）
 └── wrangler.json
 ```
 
@@ -175,6 +176,22 @@ npm run cf:deploy    # 等同 npm run build && wrangler deploy
 
 `wrangler.json` 已宣告 custom domain、cron 排程與 observability，所以部署會一併同步這些設定。部署時 wrangler 若提示本機與遠端設定有差異，確認差異內容後再按 `Y` —— **本機設定會覆蓋遠端**。
 
+### 互動架構圖
+
+`jxlin_architecture.html` 是單一獨立的 HTML，不經過 Nuxt build，也不會被 `cf:deploy` 部署；它放在 R2 bucket `jxlindev`，由 `public.jxlin.dev` 對外提供，navbar 的「互動架構圖」與本 README 頂端按鈕都指向這個網址：
+
+```
+https://public.jxlin.dev/img/jxlin_architecture.html
+```
+
+更新圖之後重新上傳：
+
+```bash
+npm run r2:deploy-arch    # wrangler r2 object put jxlindev/img/jxlin_architecture.html --remote
+```
+
+> 圖內的原始碼連結固定在產圖當下的 commit，程式大改後記得重新產圖；若搬動檔案，要同步改 `package.json` 的 `r2:deploy-arch`、`app/components/AppNavbar.vue` 與本 README 的網址。
+
 ### 觀察 cron
 
 ```bash
@@ -200,3 +217,4 @@ curl "http://localhost:8787/__scheduled?cron=*%2F10+*+*+*+*"
 | `npm run build` | 產出 Worker 到 `.output/` |
 | `npm run cf:preview` | wrangler 本地預覽已 build 的產出 |
 | `npm run cf:deploy` | **一鍵部署**（先 build 再 deploy） |
+| `npm run r2:deploy-arch` | 把 `jxlin_architecture.html` 上傳到 R2（`img/jxlin_architecture.html`） |
