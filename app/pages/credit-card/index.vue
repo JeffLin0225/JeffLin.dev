@@ -9,7 +9,7 @@
       <div class="relative z-10 container-main px-4 text-center">
         <div class="animate-fade-up stagger-1">
           <span class="inline-block px-3 py-1 mb-5 text-xs font-mono text-text-muted border border-border-subtle rounded-pill">
-            CraditCard-Searcher
+            CreditCard-Searcher
           </span>
         </div>
 
@@ -28,7 +28,7 @@
 
         <div class="flex items-center justify-center gap-4 animate-fade-up stagger-5">
           <a
-            :href="config.public.craditCardUrl"
+            :href="config.public.creditCardUrl"
             target="_blank"
             rel="noopener noreferrer"
             class="cta-btn px-8 py-3 bg-white text-surface-primary font-display text-sm font-semibold rounded-sm transition-all duration-300 hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.15)] active:scale-[0.97]"
@@ -173,7 +173,7 @@
       <div class="container-main px-4 text-center">
         <p class="font-mono text-sm text-text-muted mb-5">Ready to find the best card?</p>
         <a
-          :href="config.public.craditCardUrl"
+          :href="config.public.creditCardUrl"
           target="_blank"
           rel="noopener noreferrer"
           class="cta-btn inline-flex items-center gap-2 px-10 py-3.5 bg-white text-surface-primary font-display text-sm font-semibold rounded-sm transition-all duration-300 hover:bg-neutral-200 hover:shadow-[0_0_24px_rgba(255,255,255,0.15)] active:scale-[0.97]"
@@ -192,9 +192,9 @@ const config = useRuntimeConfig()
 
 /* ─── SEO ─── */
 useSeoMeta({
-  title: 'CraditCard-Searcher — 刷哪張？信用卡回饋速查 | Jeff Lin',
+  title: 'CreditCard-Searcher — 刷哪張？信用卡回饋速查 | Jeff Lin',
   description: '一鍵搜尋店家、通路或卡片名稱，瞬間找到回饋最高的信用卡刷法。收錄國泰CUBE、玉山Unicard、富邦J卡、玉山熊本熊卡等熱門信用卡。',
-  ogTitle: 'CraditCard-Searcher — 刷哪張？信用卡回饋速查',
+  ogTitle: 'CreditCard-Searcher — 刷哪張？信用卡回饋速查',
   ogDescription: '出門消費不再選擇困難。快速查詢最佳刷卡回饋方案。',
 })
 

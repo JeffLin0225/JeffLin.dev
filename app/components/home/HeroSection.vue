@@ -72,7 +72,7 @@
         </div>
 
         <!-- Bottom-Left Card -->
-        <NuxtLink to="/craditCard" class="nav-card group card-bl">
+        <NuxtLink to="/credit-card" class="nav-card group card-bl">
           <div class="card-inner">
             <PuzzleCardHeader filename="creditcard.ts" />
             <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">信用卡選擇器</h3>

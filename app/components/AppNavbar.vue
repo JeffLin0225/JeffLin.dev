@@ -19,7 +19,7 @@
       <!-- Desktop Nav Links -->
       <ul class="hidden md:flex items-center gap-8 list-none">
         <template v-for="link in navLinks" :key="link.path">
-          <!-- 分隔線：切開功能頁（Home / GitHub / CraditCard）與非功能頁（About / 流量 / 架構圖）-->
+          <!-- 分隔線：切開功能頁（Home / GitHub / CreditCard）與非功能頁（About / 流量 / 架構圖）-->
           <li v-if="link.dividerBefore" aria-hidden="true" role="presentation">
             <span class="block w-px h-4 bg-border-strong" />
           </li>
@@ -86,7 +86,7 @@
       >
         <ul class="container-main py-4 flex flex-col gap-1 list-none">
           <template v-for="link in navLinks" :key="link.path">
-            <!-- 分隔線：切開功能頁（Home / GitHub / CraditCard）與非功能頁（About / 流量 / 架構圖）-->
+            <!-- 分隔線：切開功能頁（Home / GitHub / CreditCard）與非功能頁（About / 流量 / 架構圖）-->
             <li v-if="link.dividerBefore" aria-hidden="true" role="presentation" class="my-2 border-t border-border-subtle" />
             <li>
               <a
@@ -146,7 +146,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { label: 'Home', path: '/', prefix: '~/' },
   { label: 'GitHub-Searcher', path: '/github', prefix: './' },
-  { label: 'CraditCard-Searcher', path: '/craditCard', prefix: './' },
+  { label: 'CreditCard-Searcher', path: '/credit-card', prefix: './' },
   { label: 'About', path: '/about', prefix: './', dividerBefore: true },
   { label: '流量', path: '/stats', prefix: './' },
   {

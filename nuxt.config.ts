@@ -4,7 +4,16 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   /* ─── Modules ─── */
-  modules: ['@nuxtjs/tailwindcss', 'nitro-cloudflare-dev'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxt/fonts', 'nitro-cloudflare-dev'],
+
+  /* ─── Fonts（自託管，build 時下載進 _fonts/，不再向 Google 發 render-blocking 請求）─── */
+  fonts: {
+    defaults: {
+      weights: [300, 400, 500, 600, 700],
+      styles: ['normal'],
+      subsets: ['latin'],
+    },
+  },
 
   /* ─── Global CSS ─── */
   css: ['~/assets/css/main.css'],
@@ -22,6 +31,8 @@ export default defineNuxtConfig({
     ...(process.env.NODE_ENV === 'production' && {
       '/github/**': { swr: 3600 },
     }),
+    // 舊網址拼錯（craditCard），保留 301 讓外部連結與搜尋引擎轉過去
+    '/craditCard': { redirect: { to: '/credit-card', statusCode: 301 } },
     '/api/**': {
       cors: {
         origin: ['https://jxlin.dev'],
@@ -34,8 +45,6 @@ export default defineNuxtConfig({
   /* ─── Runtime Config ─── */
   runtimeConfig: {
     githubToken: '',
-    // 前後端共用的內部 API Token，對應 Cloudflare 環境變數 INTERNAL_API_TOKEN
-    internalApiToken: '',
     // ─── 流量統計（server-only，絕對不可移到 public）───
     // 訪客雜湊用的 salt，對應 NUXT_VISITOR_SALT
     // 外洩可暴力反推出原始 IP（IPv4 空間小）
@@ -43,9 +52,12 @@ export default defineNuxtConfig({
     // Analytics Engine SQL API 查詢用，對應 NUXT_CF_ACCOUNT_ID / NUXT_CF_ANALYTICS_TOKEN
     cfAccountId: '',
     cfAnalyticsToken: '',
+    // 手動同步 /api/cron/sync-repos 用，對應 NUXT_CRON_SECRET（server-only）
+    // 不能沿用 public.internalApiToken：那個值會進 SSR payload，任何人都看得到
+    cronSecret: '',
     public: {
       appName: 'JXlin.dev',
-      craditCardUrl: 'https://card.jxlin.dev/',
+      creditCardUrl: 'https://card.jxlin.dev/',
       // 前端讀取同一個 token 用於呼叫後端 API
       internalApiToken: '',
     },
@@ -83,20 +95,6 @@ export default defineNuxtConfig({
         // ─── Favicon ───
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon2.svg' },
         { rel: 'shortcut icon', href: '/favicon2.svg' },
-        // ─── Fonts ───
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.googleapis.com',
-        },
-        {
-          rel: 'preconnect',
-          href: 'https://fonts.gstatic.com',
-          crossorigin: '',
-        },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap',
-        },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },

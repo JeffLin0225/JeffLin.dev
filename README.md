@@ -19,7 +19,7 @@ JeffLin.dev/
 │   │   ├── index.vue           # /          靜態
 │   │   ├── about.vue           # /about     靜態
 │   │   ├── contact.vue         # /contact   靜態
-│   │   ├── craditCard/         # /craditCard 靜態介紹頁（CTA 導向 card.jxlin.dev）
+│   │   ├── credit-card/        # /credit-card 靜態介紹頁（CTA 導向 card.jxlin.dev）
 │   │   ├── github/             # /github    GitHub 專案搜尋器
 │   │   └── stats.vue           # /stats     公開流量統計
 │   ├── composables/
@@ -130,12 +130,11 @@ npm run dev
 | `NUXT_VISITOR_SALT` | 訪客雜湊的 salt | 雜湊可被暴力反推出原始 IP |
 | `NUXT_CF_ACCOUNT_ID` | Analytics Engine SQL 查詢 | `/stats` 顯示「統計資料準備中」 |
 | `NUXT_CF_ANALYTICS_TOKEN` | 同上，需 **Account Analytics Read** 權限 | 同上 |
+| `NUXT_CRON_SECRET` | `POST /api/cron/sync-repos` 手動同步，以 `Authorization: Bearer` 帶入 | 手動同步端點停用（一律 403），cron 不受影響 |
 
 產生隨機值：`openssl rand -hex 32`
 
 > `NUXT_PUBLIC_INTERNAL_API_TOKEN` 在 `runtimeConfig.public`，會序列化進 SSR payload 送到瀏覽器 —— 它不是真正的秘密，`/api/*` 的驗證實際上是擋機器人的減速丘。也因此**首頁不能 prerender**，否則會把 build 當下的空值烤進靜態檔。
->
-> `nuxt.config.ts` 裡還有一個非 public 的 `internalApiToken`，程式中沒有任何地方讀取它，是殘留設定。
 
 ---
 
