@@ -1,11 +1,11 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
-// 來源：NavigationCards.vue
-// 產生時間：2026-10-07T15:49:58.752Z
+// 來源：index.vue
+// 產生時間：2026-10-19T15:46:08.612Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import NavigationCards from '../../../../app/components/home/NavigationCards.vue';
+import index from '../../../../app/pages/credit-card/index.vue';
 
 
 // ============================================
@@ -25,12 +25,12 @@ const defaultProps = {};
 
 // 輔助函數：快速掛載元件
 function mountComponent(overrideProps = {}) {
-  return mount(NavigationCards, {
+  return mount(index, {
     props: { ...defaultProps, ...overrideProps },
   });
 }
 
-describe('NavigationCards.vue', () => {
+describe('index.vue', () => {
   // ===== 基本掛載 =====
   it('應該能正常掛載', () => {
     const wrapper = mountComponent();

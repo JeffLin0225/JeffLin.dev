@@ -1,11 +1,11 @@
 // ============================================
 // 🟢 自動產生的 Nuxt 元件測試 — by TestForge
-// 來源：index.vue
-// 產生時間：2026-10-07T15:49:58.783Z
+// 來源：CodeReveal.vue
+// 產生時間：2026-10-19T15:46:08.573Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { mount } from '@vue/test-utils';
-import index from '../../../../app/pages/craditCard/index.vue';
+import CodeReveal from '../../../../app/components/home/CodeReveal.vue';
 
 
 // ============================================
@@ -25,12 +25,12 @@ const defaultProps = {};
 
 // 輔助函數：快速掛載元件
 function mountComponent(overrideProps = {}) {
-  return mount(index, {
+  return mount(CodeReveal, {
     props: { ...defaultProps, ...overrideProps },
   });
 }
 
-describe('index.vue', () => {
+describe('CodeReveal.vue', () => {
   // ===== 基本掛載 =====
   it('應該能正常掛載', () => {
     const wrapper = mountComponent();
