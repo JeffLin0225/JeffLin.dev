@@ -1,10 +1,9 @@
 <template>
   <section id="hero-section" class="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-28">
-    <!-- 背景（試看中：?bg=contour 切換等高線，預設 ASCII）+ 徑向淡出 -->
+    <!-- 背景：游標掃過浮現程式碼 + 徑向淡出 -->
     <div class="absolute inset-0 pointer-events-none [mask-image:linear-gradient(to_bottom,black_75%,transparent)]" aria-hidden="true">
       <ClientOnly>
-        <HomeContourField v-if="backdrop === 'contour'" />
-        <HomeAsciiField v-else />
+        <HomeCodeReveal />
       </ClientOnly>
       <div class="absolute inset-0 bg-radial-fade" />
     </div>
@@ -125,9 +124,6 @@ const startScramble = () => {
     iteration += 1 / 3
   }, 45)
 }
-const route = useRoute()
-const backdrop = computed(() => route.query.bg === 'contour' ? 'contour' : 'ascii')
-
 /* ─── 卡片聚光燈：把游標在卡片內的座標交給 CSS ─── */
 const trackPointer = (e: PointerEvent) => {
   const el = e.currentTarget as HTMLElement
