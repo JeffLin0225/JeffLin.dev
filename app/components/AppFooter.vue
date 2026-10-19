@@ -24,7 +24,7 @@
         </a>
 
         <!-- Email Button -->
-        <a id="footer-email" href="mailto:jeff@example.com" class="group flex items-center gap-2.5 px-4 py-2 border border-border-default rounded-sm bg-transparent transition-[border-color,background,transform] duration-normal hover:border-border-accent hover:bg-accent-glow active:scale-[0.97]">
+        <a id="footer-email" href="mailto:jefflin0225@gmail.com" class="group flex items-center gap-2.5 px-4 py-2 border border-border-default rounded-sm bg-transparent transition-[border-color,background,transform] duration-normal hover:border-border-accent hover:bg-accent-glow active:scale-[0.97]">
           <svg class="w-4 h-4 text-text-secondary transition-colors duration-fast group-hover:text-text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="4" width="20" height="16" rx="2"/>
             <path d="M22 4L12 13L2 4"/>
