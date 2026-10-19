@@ -32,6 +32,9 @@
     /* Accent */
     --accent-white:    hsl(0, 0%, 100%);
     --accent-glow:     hsla(0, 0%, 100%, 0.06);
+    /* Nuxt 綠：只當「訊號色」用（游標、狀態點、作用中項目），不做大面積漸層或發光 */
+    --accent-nuxt:     #00dc82;
+    --accent-nuxt-rgb: 0, 220, 130;
 
     /* Status */
     --color-success:   hsl(145, 60%, 45%);
@@ -90,8 +93,20 @@
 
   /* ─── Selection ─── */
   ::selection {
-    background: hsla(0, 0%, 100%, 0.15);
+    background: rgba(var(--accent-nuxt-rgb), 0.22);
     color: var(--text-primary);
+  }
+
+  /* ─── 減少動態效果：尊重系統設定，所有動畫與轉場縮到瞬間完成 ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 1ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 1ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 
   /* ─── Focus visible ─── */
@@ -144,6 +159,19 @@
     background: hsla(0, 0%, 4%, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ─── Film grain：極淡的靜態顆粒，讓純黑背景不那麼「數位扁平」 ─── */
+  .grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    /* 灰階雜訊 + overlay：亮暗顆粒互相抵消，不會把整體背景提亮 */
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* ─── Scanline overlay (hacker aesthetic) ─── */

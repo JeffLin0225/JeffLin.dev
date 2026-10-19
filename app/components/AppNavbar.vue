@@ -47,7 +47,7 @@
             >
               <span
                 class="font-mono text-xs mr-1 transition-colors duration-normal"
-                :class="isActive(link.path) ? 'text-text-primary/90' : 'text-text-primary/40'"
+                :class="isActive(link.path) ? 'text-accent-nuxt' : 'text-text-primary/40'"
               >{{ link.prefix }}</span>
               {{ link.label }}
             </NuxtLink>
@@ -107,14 +107,14 @@
                 class="block py-3 px-4 font-display text-sm font-medium rounded-sm transition-colors duration-fast hover:text-text-primary hover:bg-surface-hover"
                 :class="[
                   isActive(link.path)
-                    ? 'text-text-primary bg-white/[0.04] border-l-2 border-white/40'
+                    ? 'text-text-primary bg-white/[0.04] border-l-2 border-accent-nuxt/70'
                     : 'text-text-primary/60'
                 ]"
                 @click="mobileOpen = false"
               >
                 <span
                   class="font-mono text-xs mr-2"
-                  :class="isActive(link.path) ? 'text-text-primary/80' : 'text-text-muted'"
+                  :class="isActive(link.path) ? 'text-accent-nuxt' : 'text-text-muted'"
                 >{{ link.prefix }}</span>
                 {{ link.label }}
               </NuxtLink>

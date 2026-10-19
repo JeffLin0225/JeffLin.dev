@@ -33,6 +33,7 @@ export default {
         accent: {
           white: 'hsl(0, 0%, 100%)',
           glow:  'hsla(0, 0%, 100%, 0.06)',
+          nuxt:  '#00dc82',
         },
         status: {
           success: 'hsl(145, 60%, 45%)',

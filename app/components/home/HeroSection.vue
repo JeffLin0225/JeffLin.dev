@@ -1,7 +1,8 @@
 <template>
   <section id="hero-section" class="relative overflow-hidden pt-32 pb-24 md:pt-40 md:pb-28">
-    <!-- Grid background -->
+    <!-- 背景：呼吸點陣 + 徑向淡出 -->
     <div class="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <HomeDotField />
       <div class="absolute inset-0 bg-radial-fade" />
     </div>
 
@@ -10,20 +11,20 @@
       <div class="hero-grid">
 
         <!-- Top-Left Card -->
-        <NuxtLink to="/github" class="nav-card group card-tl">
+        <NuxtLink to="/github" class="nav-card group card-tl" @pointermove="trackPointer">
           <div class="card-inner">
             <PuzzleCardHeader filename="github.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">Github 專案搜索器</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white">Github 專案搜索器</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">搜尋與探索我的開源專案，支援模糊搜尋與語言篩選。</p>
             <PuzzleCardFooter :tags="['repos', 'search']" />
           </div>
         </NuxtLink>
 
         <!-- Top-Right Card -->
-        <NuxtLink to="/about" class="nav-card group card-tr">
+        <NuxtLink to="/about" class="nav-card group card-tr" @pointermove="trackPointer">
           <div class="card-inner">
             <PuzzleCardHeader filename="skills.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">關於我</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white">關於我</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">了解我的背景與技術棧。</p>
             <PuzzleCardFooter :tags="['skills', 'stack']" />
           </div>
@@ -41,12 +42,12 @@
             </span>
           </h1>
           <div class="font-mono text-base md:text-lg text-text-secondary mb-10 animate-fade-up stagger-2 h-7 flex items-center justify-center">
-            <span class="text-text-muted/60 mr-2">&gt;</span>
+            <span class="text-accent-nuxt/80 mr-2">&gt;</span>
             <span class="relative inline-block pb-0.5">
               {{ displayedText }}
               <span class="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent to-border-accent opacity-80" />
             </span>
-            <span class="inline-block w-[2px] h-5 bg-text-primary ml-1 animate-blink" />
+            <span class="inline-block w-[9px] h-5 bg-accent-nuxt/90 ml-1 animate-blink" />
           </div>
           <p class="text-text-muted text-sm md:text-base font-light max-w-md mx-auto mb-12 leading-relaxed animate-fade-up stagger-3">
             用現代網路技術打造數位體驗。
@@ -72,20 +73,20 @@
         </div>
 
         <!-- Bottom-Left Card -->
-        <NuxtLink to="/credit-card" class="nav-card group card-bl">
+        <NuxtLink to="/credit-card" class="nav-card group card-bl" @pointermove="trackPointer">
           <div class="card-inner">
             <PuzzleCardHeader filename="creditcard.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">信用卡選擇器</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white">信用卡選擇器</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">信用卡回饋速查，找到最划算的刷法。</p>
             <PuzzleCardFooter :tags="['回饋查詢', '信用卡']" />
           </div>
         </NuxtLink>
 
         <!-- Bottom-Right Card -->
-        <NuxtLink to="/github" class="nav-card group card-br">
+        <NuxtLink to="/github" class="nav-card group card-br" @pointermove="trackPointer">
           <div class="card-inner">
             <PuzzleCardHeader filename="featured.ts" />
-            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]">精選作品</h3>
+            <h3 class="font-display text-sm font-semibold text-text-primary mb-1 transition-all duration-300 group-hover:text-white">精選作品</h3>
             <p class="text-text-secondary text-xs leading-relaxed mb-2">全端應用與開源貢獻精選。</p>
             <PuzzleCardFooter :tags="['portfolio']" />
           </div>
@@ -121,6 +122,14 @@ const startScramble = () => {
     iteration += 1 / 3
   }, 45)
 }
+/* ─── 卡片聚光燈：把游標在卡片內的座標交給 CSS ─── */
+const trackPointer = (e: PointerEvent) => {
+  const el = e.currentTarget as HTMLElement
+  const rect = el.getBoundingClientRect()
+  el.style.setProperty('--mx', `${e.clientX - rect.left}px`)
+  el.style.setProperty('--my', `${e.clientY - rect.top}px`)
+}
+
 const phrases = [
   '我是林家賢，也可以叫我 Jeff',
   'Full-Stack Developer 全端開發',
@@ -168,7 +177,7 @@ onUnmounted(() => {
 <style scoped>
 
 .bg-radial-fade {
-  background: radial-gradient(ellipse 60% 50% at 50% 50%, transparent 0%, var(--bg-primary) 100%);
+  background: radial-gradient(ellipse 75% 70% at 50% 50%, transparent 30%, var(--bg-primary) 100%);
 }
 
 /* ─── Hero Grid ─── */
@@ -240,66 +249,63 @@ onUnmounted(() => {
     box-shadow 400ms ease;
 }
 
-/* Background spotlight glow on hover */
+/* 聚光燈：跟著游標走的極淡白光 */
 .card-inner::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(600px circle at 50% 0%, rgba(255,255,255,0.04), transparent 60%);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(255,255,255,0.045), transparent 60%);
   opacity: 0;
-  transition: opacity 500ms ease;
+  transition: opacity 400ms ease;
   pointer-events: none;
 }
 
-/* Animated Shimmering Top Border */
+/* 邊框：只有游標附近那一段亮成 Nuxt 綠（mask 只留 1px 邊） */
 .card-inner::before {
   content: '';
   position: absolute;
-  top: 0; left: -100%;
-  width: 200%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-accent), transparent);
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(160px circle at var(--mx, 50%) var(--my, 0%), rgba(var(--accent-nuxt-rgb), 0.55), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
   opacity: 0;
   transition: opacity 400ms ease;
+  pointer-events: none;
   z-index: 10;
 }
 
 /* Hover effects */
 .nav-card:hover .card-inner {
-  border-color: var(--border-accent);
-  transform: translateY(-12px);
-  box-shadow: 
-    0 12px 0 0 #050505,
-    0 12px 0 1px rgba(255, 255, 255, 0.08),
-    0 30px 50px rgba(0, 0, 0, 1),
-    inset 0 1px 2px rgba(255, 255, 255, 0.15);
+  border-color: var(--border-strong);
+  transform: translateY(-10px);
+  box-shadow:
+    0 10px 0 0 #050505,
+    0 10px 0 1px rgba(255, 255, 255, 0.07),
+    0 26px 44px rgba(0, 0, 0, 1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.12);
 }
-.nav-card:hover .card-inner::after {
-  opacity: 1; /* Fade in spotlight */
-}
+.nav-card:hover .card-inner::after,
 .nav-card:hover .card-inner::before {
   opacity: 1;
-  animation: shimmerLine 2.5s infinite linear;
-}
-
-@keyframes shimmerLine {
-  from { transform: translateX(0); }
-  to { transform: translateX(50%); }
 }
 
 /* ─── Animations ─── */
 .nav-card, .hero-center {
-  animation: fadeUpIn 2.0s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeUpIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .hero-center { animation-delay: 0s; }
-.card-tl { animation-delay: 0.3s; }
-.card-tr { animation-delay: 0.6s; }
-.card-bl { animation-delay: 0.9s; }
-.card-br { animation-delay: 1.2s; }
+.card-tl { animation-delay: 0.12s; }
+.card-tr { animation-delay: 0.2s; }
+.card-bl { animation-delay: 0.28s; }
+.card-br { animation-delay: 0.36s; }
 
 @keyframes fadeUpIn {
-  from { opacity: 0; transform: translateY(30px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ─── Responsive ─── */

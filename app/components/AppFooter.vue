@@ -10,7 +10,7 @@
         <span class="hidden xl:inline text-text-primary/40">═══</span>
         <span>&copy; {{ currentYear }} Jia-Xian (Jeff) Lin</span>
         <span class="text-text-primary/30">│</span>
-        <span>使用 Nuxt 建構</span>
+        <span>使用 <span class="text-accent-nuxt">Nuxt</span> 建構</span>
       </div>
 
       <!-- Social links (Centered) -->
