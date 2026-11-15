@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：siteStats.ts
-// 產生時間：2026-10-19T15:47:41.074Z
+// 產生時間：2026-11-15T14:38:57.309Z
 // ============================================
 import { describe, it, expect, vi } from 'vitest';
 import { emptyStatsPayload, readStatsCache, writeStatsCache, queryStats, refreshStatsCache } from '../../../server/utils/siteStats';

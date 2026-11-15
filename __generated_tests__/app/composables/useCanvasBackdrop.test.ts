@@ -1,7 +1,7 @@
 // ============================================
 // 🧪 TS 自動產生的測試 — by TestForge
 // 來源：useCanvasBackdrop.ts
-// 產生時間：2026-10-19T15:47:41.028Z
+// 產生時間：2026-11-15T14:38:57.269Z
 // ============================================
 import { describe, it, expect } from 'vitest';
 import { useCanvasBackdrop } from '../../../app/composables/useCanvasBackdrop';
