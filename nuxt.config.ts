@@ -66,7 +66,8 @@ export default defineNuxtConfig({
   /* ─── Vite Optimize ─── */
   vite: {
     optimizeDeps: {
-      include: ['fuse.js'],
+      // devtools 的兩個套件：dev 時先預打包，免得第一次開頁面被 Vite 觸發整頁重載
+      include: ['fuse.js', '@vue/devtools-core', '@vue/devtools-kit'],
     },
   },
 
@@ -90,11 +91,15 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'Jia-Xian Lin (林家賢 / Jeff) — Full-Stack Developer. Building digital experiences with modern web technologies.' },
         { name: 'theme-color', content: 'hsl(0, 0%, 4%)' },
+        // 加到手機主畫面時顯示的名稱（JXlin 系列命名）
+        { name: 'apple-mobile-web-app-title', content: 'JXlin.dev' },
       ],
       link: [
-        // ─── Favicon ───
-        { rel: 'icon', type: 'image/svg+xml', href: '/favicon2.svg' },
-        { rel: 'shortcut icon', href: '/favicon2.svg' },
+        // ─── Favicon（JX_ 靜態版；游標閃爍只做在導覽列的 AppLogoMark）───
+        // favicon2.svg 是舊的銀色 J，保留檔案但不再引用
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },

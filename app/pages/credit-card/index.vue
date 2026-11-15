@@ -14,7 +14,7 @@
         </div>
 
         <h1 class="font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-tight mb-3 animate-fade-up stagger-2">
-          <span class="mr-2">💳</span>刷哪張？
+          <img src="/icons/jxlin-card.svg" alt="" width="56" height="56" class="inline-block align-middle mr-3 -mt-2 w-12 h-12 md:w-14 md:h-14">刷哪張？
         </h1>
 
         <p class="font-mono text-base md:text-lg text-text-secondary mb-4 animate-fade-up stagger-3">

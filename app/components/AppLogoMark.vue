@@ -1,0 +1,26 @@
+<script setup lang="ts">
+withDefaults(defineProps<{ size?: number }>(), { size: 28 })
+</script>
+
+<template>
+  <!-- JX_ 小尺寸版（與 public/favicon.svg 同一張），只有頁面內的這份讓游標閃 -->
+  <svg :width="size" :height="size" viewBox="0 0 512 512" aria-hidden="true" class="shrink-0">
+    <rect width="512" height="512" rx="112" fill="#0d0e11" />
+    <rect x="3" y="3" width="506" height="506" rx="109" fill="none" stroke="#fff" stroke-opacity="0.09" stroke-width="6" />
+    <path transform="translate(124 300) scale(0.25 -0.25)" fill="#f2f3f5" d="M270 -10Q155 -10 87.5 52.5Q20 115 20 221H170Q170 175 197.0 147.5Q224 120 270 120Q316 120 343.0 146.5Q370 173 370 219V730H520V219Q520 113 453.0 51.5Q386 -10 270 -10Z" />
+    <path transform="translate(256 300) scale(0.25 -0.25)" fill="#f2f3f5" d="M20 0 216 377 33 730H198L274 570Q285 548 292.5 530.0Q300 512 302 504Q304 512 311.0 530.0Q318 548 328 570L406 730H567L384 377L580 0H415L327 180Q317 202 309.0 221.0Q301 240 297 250Q294 240 287.0 221.0Q280 202 269 180L181 0Z" />
+    <rect class="cursor" x="120" y="372" width="272" height="56" rx="10" fill="#00dc82" />
+  </svg>
+</template>
+
+<style scoped>
+.cursor { animation: cursor-blink 1.1s steps(1) infinite; }
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor { animation: none; }
+}
+</style>

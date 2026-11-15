@@ -8,6 +8,7 @@
     <div class="container-main flex items-center justify-between h-16 relative">
       <!-- Logo -->
       <NuxtLink to="/" class="group flex items-center gap-0.5" aria-label="Home">
+        <AppLogoMark class="mr-2" />
         <span class="font-display text-xl font-bold tracking-tight text-text-primary">
           JXlin
         </span>
